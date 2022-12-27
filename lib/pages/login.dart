@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:latino_app/components/my_button.dart';
+import 'package:latino_app/components/my_textfield.dart';
 
 class LoginPage extends StatefulWidget {
   // to give to the gesture detector
@@ -63,75 +65,27 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 50),
 
                 // username textfield
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: TextField(
-                        controller: _usernameController,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Username',
-                        ),
-                      ),
-                    ),
-                  ),
+                MyTextField(
+                  controller: _usernameController,
+                  hintText: 'Username',
+                  obscureText: false,
                 ),
                 SizedBox(height: 10),
 
                 // password textfield
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: TextField(
-                        controller: _passwordController,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Password',
-                        ),
-                      ),
-                    ),
-                  ),
+                MyTextField(
+                  controller: _passwordController,
+                  hintText: 'Password',
+                  obscureText: true,
                 ),
                 SizedBox(height: 10),
 
                 // sign in button
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: GestureDetector(
-                    onTap: signIn,
-                    child: Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFE0503D),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Sign in',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                MyButton(
+                  onTap: signIn,
+                  label: 'Sign in',
+                  color: Color(0xFFE0503D),
+                  textColor: Colors.white,
                 ),
                 SizedBox(height: 25),
 
