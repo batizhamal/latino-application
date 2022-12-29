@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latino_app/components/my_button.dart';
 import 'package:latino_app/components/my_textfield.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'home.dart';
 
 class LoginPage extends StatefulWidget {
   // to give to the gesture detector
@@ -17,10 +22,46 @@ class _LoginPageState extends State<LoginPage> {
   // text controllers
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _loading = false;
 
   // signIn method
   Future signIn() async {
-    // TODO: create sign in method with API
+    setState(() {
+      _loading = true;
+    });
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    Map body = {
+      'email': _usernameController.text,
+      'password': _passwordController.text,
+    };
+
+    var data = null;
+
+    var response = await http.post(
+      Uri.parse("http://latino-parties.com/api/auth/login"),
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      data = json.decode(response.body);
+
+      if (data != null) {
+        setState(() {
+          _loading = false;
+        });
+        sharedPreferences.setString("token", data['access_token']);
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+          (Route<dynamic> route) => false,
+        );
+      } else {
+        setState(() {
+          _loading = false;
+        });
+        print(data.body);
+      }
+    }
   }
 
   @override
