@@ -1,8 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:latino_app/components/my_button.dart';
+import 'package:latino_app/components/my_textfield.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'home.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  // to give to the gesture detector
+  final VoidCallback showRegisterPage;
+
+  const LoginPage({super.key, required this.showRegisterPage});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -12,17 +22,53 @@ class _LoginPageState extends State<LoginPage> {
   // text controllers
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _loading = false;
 
   // signIn method
   Future signIn() async {
-    print(_usernameController.text);
-    print(_passwordController.text);
+    setState(() {
+      _loading = true;
+    });
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    Map body = {
+      'email': _usernameController.text,
+      'password': _passwordController.text,
+    };
+
+    var data = null;
+
+    var response = await http.post(
+      Uri.parse("http://latino-parties.com/api/auth/login"),
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      data = json.decode(response.body);
+
+      if (data != null) {
+        setState(() {
+          _loading = false;
+        });
+        sharedPreferences.setString("token", data['access_token']);
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+          (Route<dynamic> route) => false,
+        );
+      } else {
+        setState(() {
+          _loading = false;
+        });
+        print(data.body);
+      }
+    }
   }
 
   @override
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -60,75 +106,27 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 50),
 
                 // username textfield
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: TextField(
-                        controller: _usernameController,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Username',
-                        ),
-                      ),
-                    ),
-                  ),
+                MyTextField(
+                  controller: _usernameController,
+                  hintText: 'Username',
+                  obscureText: false,
                 ),
                 SizedBox(height: 10),
 
                 // password textfield
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: TextField(
-                        controller: _passwordController,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Password',
-                        ),
-                      ),
-                    ),
-                  ),
+                MyTextField(
+                  controller: _passwordController,
+                  hintText: 'Password',
+                  obscureText: true,
                 ),
                 SizedBox(height: 10),
 
                 // sign in button
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: GestureDetector(
-                    onTap: signIn,
-                    child: Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFE0503D),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Sign in',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                MyButton(
+                  onTap: signIn,
+                  label: 'Sign in',
+                  color: Color(0xFFE0503D),
+                  textColor: Colors.white,
                 ),
                 SizedBox(height: 25),
 
@@ -137,11 +135,14 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Not a member?'),
-                    Text(' Register now',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ))
+                    GestureDetector(
+                      onTap: widget.showRegisterPage,
+                      child: Text(' Register now',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    )
                   ],
                 )
               ],
