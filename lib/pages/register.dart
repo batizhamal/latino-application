@@ -42,10 +42,21 @@ class _RegisterPageState extends State<RegisterPage> {
   // sign up method
   Future signUp() async {
     if (passwordConfirmed()) {
-      // TODO: create sign up method with API
       setState(() {
         _loading = true;
       });
+
+      // loading circle
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            );
+          });
+
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
 
@@ -64,6 +75,9 @@ class _RegisterPageState extends State<RegisterPage> {
         Uri.parse("http://latino-parties.com/api/auth/register"),
         body: body,
       );
+
+      // pop the loading circle
+      Navigator.of(context).pop();
 
       if (response.statusCode == 200) {
         data = json.decode(response.body);
@@ -163,6 +177,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _confirmPasswordController,
                   hintText: 'Confirm password',
                   obscureText: true,
+                  errorText:
+                      passwordConfirmed() ? null : 'Passwords do not match',
+                  onChanged: (_) => setState(() {}),
                 ),
                 SizedBox(height: 10),
 

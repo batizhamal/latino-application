@@ -29,6 +29,18 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _loading = true;
     });
+
+    // loading circle
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Colors.white,
+            ),
+          );
+        });
+
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     Map body = {
@@ -42,6 +54,9 @@ class _LoginPageState extends State<LoginPage> {
       Uri.parse("http://latino-parties.com/api/auth/login"),
       body: body,
     );
+
+    // pop the loading circle
+    Navigator.of(context).pop();
 
     if (response.statusCode == 200) {
       data = json.decode(response.body);

@@ -6,12 +6,16 @@ class MyTextField extends StatelessWidget {
   final controller;
   final String hintText;
   final bool obscureText;
+  final String? errorText;
+  final Function(String)? onChanged;
 
   const MyTextField({
     super.key,
     required this.controller,
     required this.hintText,
     required this.obscureText,
+    this.errorText,
+    this.onChanged,
   });
 
   @override
@@ -32,7 +36,9 @@ class MyTextField extends StatelessWidget {
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hintText,
+              errorText: errorText,
             ),
+            onChanged: onChanged,
           ),
         ),
       ),
