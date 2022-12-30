@@ -38,6 +38,7 @@ dependencies:
   google_fonts:
   http: ^0.13.5
   shared_preferences: ^2.0.15
+  hidden_drawer_menu: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +62,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/two_dancers_cartoon.png
-    - assets/images/1.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
