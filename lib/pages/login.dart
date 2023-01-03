@@ -6,6 +6,8 @@ import 'package:latino_app/components/hidden_drawer.dart';
 import 'package:latino_app/components/my_button.dart';
 import 'package:latino_app/components/my_textfield.dart';
 import 'package:http/http.dart' as http;
+import 'package:latino_app/constants/color_codes.dart';
+import 'package:latino_app/constants/image_strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -23,6 +25,13 @@ class _LoginPageState extends State<LoginPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _loading = false;
+  bool _passwordVisible = false;
+  String? _errorMessage = null;
+
+  @override
+  void initState() {
+    _errorMessage = null;
+  }
 
   // signIn method
   Future signIn() async {
@@ -76,6 +85,16 @@ class _LoginPageState extends State<LoginPage> {
         });
         print(data.body);
       }
+    } else {
+      var errorstring = "";
+      var data = json.decode(response.body);
+
+      data["errors"].forEach((key, value) {
+        errorstring = errorstring + '\n' + value.join('\n');
+      });
+      setState(() {
+        _errorMessage = errorstring;
+      });
     }
   }
 
@@ -88,75 +107,128 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      backgroundColor: Color(0xFFDEE4F6),
+      backgroundColor: Color(lightBlue),
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(30),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // image
                 Image.asset(
-                  'assets/images/two_dancers_cartoon.png',
-                  width: 300,
-                  height: 300,
+                  twoDancersImage,
+                  height: size.height * 0.2,
                 ),
                 SizedBox(height: 25),
 
                 // Hello again!
                 Text(
-                  'Hello, social dancer!',
-                  style: GoogleFonts.bebasNeue(
-                    fontSize: 48,
-                  ),
+                  'Welcome back!',
+                  style: Theme.of(context).textTheme.headline1,
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Welcome back, you\'ve been missed!',
-                  style: TextStyle(
-                    fontSize: 20,
+                  'Plan, register for event, keep track.',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+
+                Form(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextFormField(
+                          controller: _usernameController,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.person_outline_outlined),
+                            labelText: 'Username',
+                            hintText: 'Username',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          controller: _passwordController,
+                          obscureText: !_passwordVisible,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.password_rounded),
+                            labelText: 'Username',
+                            hintText: 'Username',
+                            border: OutlineInputBorder(),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _passwordVisible = !_passwordVisible;
+                                });
+                              },
+                              icon: Icon(Icons.remove_red_eye_sharp),
+                            ),
+                          ),
+                        ),
+                        // SizedBox(height: 10),
+                        // TextButton(
+                        //   onPressed: () {},
+                        //   child: Align(
+                        //     alignment: Alignment.centerRight,
+                        //     child: Text(
+                        //       'Forgot password?',
+                        //       style: TextStyle(
+                        //         color: Colors.blue,
+                        //         fontSize: 14,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        Container(
+                          child: _errorMessage == null
+                              ? SizedBox(height: 10)
+                              : Column(
+                                  children: [
+                                    Text(
+                                      _errorMessage.toString(),
+                                      style: TextStyle(color: Color(mainRed)),
+                                    ),
+                                    SizedBox(height: 10),
+                                  ],
+                                ),
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: signIn,
+                            child: Text('LOGIN'),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                SizedBox(height: 50),
-
-                // username textfield
-                MyTextField(
-                  controller: _usernameController,
-                  hintText: 'Username',
-                  obscureText: false,
-                ),
-                SizedBox(height: 10),
-
-                // password textfield
-                MyTextField(
-                  controller: _passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
-                ),
-                SizedBox(height: 10),
-
-                // sign in button
-                MyButton(
-                  onTap: signIn,
-                  label: 'Sign in',
-                  color: Color(0xFFE0503D),
-                  textColor: Colors.white,
-                ),
-                SizedBox(height: 25),
 
                 // not a member? register now
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Not a member?'),
+                    Text(
+                      'Not a member?',
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
                     GestureDetector(
                       onTap: widget.showRegisterPage,
-                      child: Text(' Register now',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          )),
+                      child: Text(
+                        ' Sign up',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 14,
+                        ),
+                      ),
                     )
                   ],
                 )

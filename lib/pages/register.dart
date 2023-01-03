@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:latino_app/components/hidden_drawer.dart';
 import 'package:latino_app/components/my_button.dart';
 import 'package:latino_app/components/my_textfield.dart';
+import 'package:latino_app/constants/color_codes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,10 +24,19 @@ class _RegisterPageState extends State<RegisterPage> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _nameController = TextEditingController();
-  final _surnameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
 
   bool _loading = false;
+
+  bool _passwordVisible = false;
+  bool _confirmPasswordVisible = false;
+
+  String? _errorMessage = null;
+
+  @override
+  void initState() {
+    _errorMessage = null;
+  }
 
   @override
   void dispose() {
@@ -34,7 +44,6 @@ class _RegisterPageState extends State<RegisterPage> {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     _nameController.dispose();
-    _surnameController.dispose();
     _phoneNumberController.dispose();
     super.dispose();
   }
@@ -60,11 +69,14 @@ class _RegisterPageState extends State<RegisterPage> {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
 
+      var name = _nameController.text.split(' ')[0];
+      var surname = _nameController.text.split(' ').sublist(1).join(' ');
+
       Map body = {
         'email': _usernameController.text,
         'password': _passwordController.text,
-        'name': _nameController.text,
-        'surname': _surnameController.text,
+        'name': name,
+        'surname': surname.isNotEmpty ? surname : " ",
         'phone_number': _phoneNumberController.text,
         'type': 'a',
       };
@@ -98,6 +110,16 @@ class _RegisterPageState extends State<RegisterPage> {
           });
           print(data.body);
         }
+      } else {
+        var errorstring = "";
+        var data = json.decode(response.body);
+
+        data["errors"].forEach((key, value) {
+          errorstring = errorstring + '\n' + value.join('\n');
+        });
+        setState(() {
+          _errorMessage = errorstring;
+        });
       }
     }
   }
@@ -117,97 +139,138 @@ class _RegisterPageState extends State<RegisterPage> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Register',
-                  style: GoogleFonts.bebasNeue(
-                    fontSize: 48,
+            child: Container(
+              padding: EdgeInsets.all(30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Register',
+                    style: Theme.of(context).textTheme.headline1,
                   ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Enter your details below to register',
-                  style: TextStyle(
-                    fontSize: 20,
+                  SizedBox(height: 10),
+                  Text(
+                    'Enter your details below to register',
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
-                ),
-                SizedBox(height: 50),
 
-                MyTextField(
-                  controller: _nameController,
-                  hintText: 'First name',
-                  obscureText: false,
-                ),
-                SizedBox(height: 10),
+                  Form(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextFormField(
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.person_outline_outlined),
+                              labelText: 'Fullname',
+                              hintText: 'Fullname',
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: _usernameController,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.mail),
+                              labelText: 'Email',
+                              hintText: 'Email',
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: _phoneNumberController,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.phone_outlined),
+                              labelText: 'Phone number',
+                              hintText: 'Phone number',
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: _passwordController,
+                            obscureText: !_passwordVisible,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.fingerprint),
+                              labelText: 'Password',
+                              hintText: 'Password',
+                              border: OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _passwordVisible = !_passwordVisible;
+                                  });
+                                },
+                                icon: Icon(Icons.remove_red_eye),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: _confirmPasswordController,
+                            obscureText: !_confirmPasswordVisible,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.password),
+                              labelText: 'Password',
+                              hintText: 'Password',
+                              border: OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _confirmPasswordVisible =
+                                        !_confirmPasswordVisible;
+                                  });
+                                },
+                                icon: Icon(Icons.remove_red_eye),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: _errorMessage == null
+                                ? SizedBox(height: 10)
+                                : Column(
+                                    children: [
+                                      Text(
+                                        _errorMessage.toString(),
+                                        style: TextStyle(color: Color(mainRed)),
+                                      ),
+                                      SizedBox(height: 10),
+                                    ],
+                                  ),
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: signUp,
+                              child: Text('SIGNUP'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
 
-                MyTextField(
-                  controller: _surnameController,
-                  hintText: 'Last name',
-                  obscureText: false,
-                ),
-                SizedBox(height: 10),
-
-                // username textfield
-                MyTextField(
-                  controller: _usernameController,
-                  hintText: 'Username',
-                  obscureText: false,
-                ),
-                SizedBox(height: 10),
-
-                MyTextField(
-                  controller: _phoneNumberController,
-                  hintText: 'Phone number',
-                  obscureText: false,
-                ),
-                SizedBox(height: 10),
-
-                // password textfield
-                MyTextField(
-                  controller: _passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
-                ),
-                SizedBox(height: 10),
-
-                // confirm password textfield
-                MyTextField(
-                  controller: _confirmPasswordController,
-                  hintText: 'Confirm password',
-                  obscureText: true,
-                  errorText:
-                      passwordConfirmed() ? null : 'Passwords do not match',
-                  onChanged: (_) => setState(() {}),
-                ),
-                SizedBox(height: 10),
-
-                // sign in button
-                MyButton(
-                  onTap: signUp,
-                  label: 'Sign up',
-                  color: Color(0xFFE0503D),
-                  textColor: Colors.white,
-                ),
-                SizedBox(height: 25),
-
-                // not a member? register now
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Already a member?'),
-                    GestureDetector(
-                      onTap: widget.showLoginPage,
-                      child: Text(' Sign in',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    )
-                  ],
-                )
-              ],
+                  // not a member? register now
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Already a member?'),
+                      GestureDetector(
+                        onTap: widget.showLoginPage,
+                        child: Text(' Sign in',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                            )),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

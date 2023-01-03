@@ -39,6 +39,7 @@ dependencies:
   http: ^0.13.5
   shared_preferences: ^2.0.15
   hidden_drawer_menu: ^3.0.1
+  flutter_native_splash: ^2.2.16
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +63,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/two_dancers_cartoon.png
+    - assets/images/planning.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -93,3 +95,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_native_splash:
+  color: "#DEE4F6"
+  color_dark: "#DEE4F6"
+  image: assets/images/nulatinosdclogo.png
+  image_dark: assets/images/nulatinosdclogo.png
