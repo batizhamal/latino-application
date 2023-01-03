@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home/create_event.dart';
+import 'package:latino_app/pages/home/edit_event.dart';
 import 'package:latino_app/pages/profile/profile.dart';
 import 'package:latino_app/pages/welcome_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -105,13 +106,44 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              event["title"],
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    event["title"],
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                _canCreate
+                    ? IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => EditEventPage(
+                                id: event["id"],
+                                title: event["title"],
+                                description: event["description"],
+                                date: event["date"],
+                                price: event["price"],
+                                address: event["address"],
+                              ),
+                            ),
+                            (Route<dynamic> route) => false,
+                          );
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          size: 14,
+                        ),
+                        color: Colors.white,
+                      )
+                    : Container()
+              ],
             ),
             Divider(
               color: Colors.white,
@@ -173,24 +205,20 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            Row(
-              children: [
-                Text(
-                  "Информация: ",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color(lightYellow),
-                  ),
-                ),
-                Text(
-                  event["description"],
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
+            Text(
+              "Информация: ",
+              style: TextStyle(
+                fontSize: 14,
+                color: Color(lightYellow),
+              ),
+            ),
+            Text(
+              event["description"],
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ],
         ),
@@ -200,6 +228,11 @@ class _HomePageState extends State<HomePage> {
     }
 
     return res;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

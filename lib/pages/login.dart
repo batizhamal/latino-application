@@ -36,9 +36,11 @@ class _LoginPageState extends State<LoginPage> {
 
   // signIn method
   Future signIn() async {
-    setState(() {
-      _loading = true;
-    });
+    if (this.mounted) {
+      setState(() {
+        _loading = true;
+      });
+    }
 
     // loading circle
     showDialog(
@@ -72,9 +74,6 @@ class _LoginPageState extends State<LoginPage> {
       data = json.decode(response.body);
 
       if (data != null) {
-        setState(() {
-          _loading = false;
-        });
         sharedPreferences.setString("token", data['access_token']);
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => HomePage()),
@@ -92,11 +91,18 @@ class _LoginPageState extends State<LoginPage> {
             });
         var role = json.decode(responseProfile.body)!["data"]["role"];
 
-        sharedPreferences.setString("role", role != null ? role : "");
+        sharedPreferences.setString("role", role);
+        if (this.mounted) {
+          setState(() {
+            _loading = false;
+          });
+        }
       } else {
-        setState(() {
-          _loading = false;
-        });
+        if (this.mounted) {
+          setState(() {
+            _loading = false;
+          });
+        }
         print(data.body);
       }
     } else {
@@ -106,9 +112,11 @@ class _LoginPageState extends State<LoginPage> {
       data["errors"].forEach((key, value) {
         errorstring = errorstring + '\n' + value.join('\n');
       });
-      setState(() {
-        _errorMessage = errorstring;
-      });
+      if (this.mounted) {
+        setState(() {
+          _errorMessage = errorstring;
+        });
+      }
     }
   }
 
@@ -177,9 +185,11 @@ class _LoginPageState extends State<LoginPage> {
                               border: OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
-                                  setState(() {
-                                    _passwordVisible = !_passwordVisible;
-                                  });
+                                  if (this.mounted) {
+                                    setState(() {
+                                      _passwordVisible = !_passwordVisible;
+                                    });
+                                  }
                                 },
                                 icon: Icon(Icons.remove_red_eye_sharp),
                               ),
