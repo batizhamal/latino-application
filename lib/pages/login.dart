@@ -8,6 +8,7 @@ import 'package:latino_app/components/my_textfield.dart';
 import 'package:http/http.dart' as http;
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
+import 'package:latino_app/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -76,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
         });
         sharedPreferences.setString("token", data['access_token']);
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => HiddenDrawer()),
+          MaterialPageRoute(builder: (BuildContext context) => HomePage()),
           (Route<dynamic> route) => false,
         );
       } else {

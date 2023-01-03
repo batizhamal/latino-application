@@ -6,6 +6,7 @@ import 'package:latino_app/components/hidden_drawer.dart';
 import 'package:latino_app/components/my_button.dart';
 import 'package:latino_app/components/my_textfield.dart';
 import 'package:latino_app/constants/color_codes.dart';
+import 'package:latino_app/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -78,7 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'name': name,
         'surname': surname.isNotEmpty ? surname : " ",
         'phone_number': _phoneNumberController.text,
-        'type': 'a',
+        'type': 'b',
       };
 
       var data = null;
@@ -100,8 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
           });
           sharedPreferences.setString("token", data['access_token']);
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (BuildContext context) => HiddenDrawer()),
+            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
             (Route<dynamic> route) => false,
           );
         } else {

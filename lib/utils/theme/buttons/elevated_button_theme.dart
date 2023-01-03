@@ -5,6 +5,7 @@ class MyElevatedButtonTheme {
   static final lightElevatedButtonTheme = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: Color(mainRed),
+      elevation: 0,
     ),
   );
 

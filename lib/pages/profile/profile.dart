@@ -1,0 +1,153 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:latino_app/auth/auth_page.dart';
+import 'package:latino_app/constants/color_codes.dart';
+import 'package:latino_app/constants/image_strings.dart';
+import 'package:latino_app/pages/profile/profile_menu_item.dart';
+import 'package:latino_app/pages/profile/update_profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  late SharedPreferences sharedPreferences;
+  var data;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _isLoading = true;
+    checkLoginStatus();
+    getProfileData();
+  }
+
+  checkLoginStatus() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+
+    if (sharedPreferences.getString("token") == null) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (BuildContext context) => AuthPage(showLoginPage: true)),
+          (Route<dynamic> route) => false);
+    }
+  }
+
+  getProfileData() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+
+    var token = sharedPreferences.getString("token");
+
+    var response = await http
+        .get(Uri.parse("http://latino-parties.com/api/auth/profile"), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    print(response.body);
+    setState(() {
+      data = json.decode(response.body)["data"];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(lightBlue),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(Icons.arrow_back),
+          color: Color(mainDark),
+        ),
+        title: Text(
+          'Profile',
+          style: Theme.of(context).textTheme.headline3,
+        ),
+        backgroundColor: Color(lightBlue),
+        elevation: 0,
+      ),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                color: Color(mainDark),
+              ),
+            )
+          : SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.all(30),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 120,
+                      height: 120,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image.asset(blankProfileImage),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      data["name"] + " " + data["surname"],
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                    Text(
+                      data["email"],
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    SizedBox(height: 20),
+                    SizedBox(
+                      width: 300,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => UpdateProfilePage(),
+                            ),
+                          );
+                        },
+                        child: Text('Edit profile'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(darkYellow),
+                          side: BorderSide.none,
+                          shape: StadiumBorder(),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    Divider(),
+                    SizedBox(height: 10),
+                    ProfileMenuWidget(
+                      title: 'Information',
+                      icon: Icons.info_outline,
+                      onPress: () {},
+                    ),
+                    Divider(),
+                    ProfileMenuWidget(
+                      title: 'Logout',
+                      icon: Icons.logout,
+                      onPress: () {},
+                      textColor: Colors.red,
+                      endIcon: false,
+                    )
+                  ],
+                ),
+              ),
+            ),
+    );
+  }
+}
