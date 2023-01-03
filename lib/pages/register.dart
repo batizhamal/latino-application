@@ -7,6 +7,7 @@ import 'package:latino_app/components/my_button.dart';
 import 'package:latino_app/components/my_textfield.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -34,9 +35,17 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String? _errorMessage = null;
 
+  var roles = [
+    DropdownMenuItem(child: Text("Танцор"), value: "b"),
+    DropdownMenuItem(child: Text("Организатор"), value: "a"),
+  ];
+
+  var _role;
+
   @override
   void initState() {
     _errorMessage = null;
+    _role = roles[0].value;
   }
 
   @override
@@ -79,7 +88,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'name': name,
         'surname': surname.isNotEmpty ? surname : " ",
         'phone_number': _phoneNumberController.text,
-        'type': 'b',
+        'type': _role,
       };
 
       var data = null;
@@ -186,6 +195,22 @@ class _RegisterPageState extends State<RegisterPage> {
                               prefixIcon: Icon(Icons.phone_outlined),
                               labelText: 'Phone number',
                               hintText: 'Phone number',
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          DropdownButtonFormField(
+                            value: _role,
+                            items: roles,
+                            onChanged: (value) {
+                              setState(() {
+                                _role = value;
+                              });
+                            },
+                            icon: Icon(LineAwesomeIcons.angle_down),
+                            decoration: InputDecoration(
+                              labelText: 'Role',
+                              prefixIcon: Icon(Icons.accessibility_outlined),
                               border: OutlineInputBorder(),
                             ),
                           ),
