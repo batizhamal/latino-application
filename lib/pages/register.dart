@@ -61,9 +61,11 @@ class _RegisterPageState extends State<RegisterPage> {
   // sign up method
   Future signUp() async {
     if (passwordConfirmed()) {
-      setState(() {
-        _loading = true;
-      });
+      if (this.mounted) {
+        setState(() {
+          _loading = true;
+        });
+      }
 
       // loading circle
       showDialog(
@@ -105,18 +107,34 @@ class _RegisterPageState extends State<RegisterPage> {
         data = json.decode(response.body);
 
         if (data != null) {
-          setState(() {
-            _loading = false;
-          });
+          if (this.mounted) {
+            setState(() {
+              _loading = false;
+            });
+          }
           sharedPreferences.setString("token", data['access_token']);
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => HomePage()),
             (Route<dynamic> route) => false,
           );
+          var token = data['access_token'];
+
+          var responseProfile = await http.get(
+              Uri.parse("http://latino-parties.com/api/auth/profile"),
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer $token',
+              });
+          var role = json.decode(responseProfile.body)!["data"]["role"];
+
+          sharedPreferences.setString("role", role);
         } else {
-          setState(() {
-            _loading = false;
-          });
+          if (this.mounted) {
+            setState(() {
+              _loading = false;
+            });
+          }
           print(data.body);
         }
       } else {
@@ -126,9 +144,11 @@ class _RegisterPageState extends State<RegisterPage> {
         data["errors"].forEach((key, value) {
           errorstring = errorstring + '\n' + value.join('\n');
         });
-        setState(() {
-          _errorMessage = errorstring;
-        });
+        if (this.mounted) {
+          setState(() {
+            _errorMessage = errorstring;
+          });
+        }
       }
     }
   }
@@ -203,9 +223,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             value: _role,
                             items: roles,
                             onChanged: (value) {
-                              setState(() {
-                                _role = value;
-                              });
+                              if (this.mounted) {
+                                setState(() {
+                                  _role = value;
+                                });
+                              }
                             },
                             icon: Icon(LineAwesomeIcons.angle_down),
                             decoration: InputDecoration(
@@ -225,9 +247,11 @@ class _RegisterPageState extends State<RegisterPage> {
                               border: OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
-                                  setState(() {
-                                    _passwordVisible = !_passwordVisible;
-                                  });
+                                  if (this.mounted) {
+                                    setState(() {
+                                      _passwordVisible = !_passwordVisible;
+                                    });
+                                  }
                                 },
                                 icon: Icon(Icons.remove_red_eye),
                               ),
@@ -244,10 +268,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               border: OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
-                                  setState(() {
-                                    _confirmPasswordVisible =
-                                        !_confirmPasswordVisible;
-                                  });
+                                  if (this.mounted) {
+                                    setState(() {
+                                      _confirmPasswordVisible =
+                                          !_confirmPasswordVisible;
+                                    });
+                                  }
                                 },
                                 icon: Icon(Icons.remove_red_eye),
                               ),
