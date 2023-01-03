@@ -26,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   DateTime _selectedDate = DateTime.now();
   bool _loading = false;
   bool _canCreate = false;
+  bool _registering = false;
 
   @override
   void initState() {
@@ -119,30 +120,51 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                _canCreate
-                    ? IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => EditEventPage(
-                                id: event["id"],
-                                title: event["title"],
-                                description: event["description"],
-                                date: event["date"],
-                                price: event["price"],
-                                address: event["address"],
-                              ),
+                Row(
+                  children: [
+                    _canCreate
+                        ? IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      EditEventPage(
+                                    id: event["id"],
+                                    title: event["title"],
+                                    description: event["description"],
+                                    date: event["date"],
+                                    price: event["price"],
+                                    address: event["address"],
+                                  ),
+                                ),
+                                (Route<dynamic> route) => false,
+                              );
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              size: 14,
                             ),
-                            (Route<dynamic> route) => false,
-                          );
-                        },
-                        icon: Icon(
-                          Icons.edit,
-                          size: 14,
-                        ),
-                        color: Colors.white,
-                      )
-                    : Container()
+                            color: Colors.white,
+                          )
+                        : Container(),
+                    _registering
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )
+                        : IconButton(
+                            onPressed: () {
+                              registerForEvent(event["id"]);
+                            },
+                            icon: Icon(
+                              Icons.add,
+                              size: 14,
+                            ),
+                            color: Colors.white,
+                          ),
+                  ],
+                ),
               ],
             ),
             Divider(
@@ -337,5 +359,25 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
     );
+  }
+
+  registerForEvent(int id) async {
+    setState(() {
+      _registering = true;
+    });
+
+    final sharedPrederences = await SharedPreferences.getInstance();
+    var token = sharedPrederences.getString("token");
+
+    var response = await http.post(
+      Uri.parse("http://latino-parties.com/api/events/$id/register"),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    setState(() {
+      _registering = false;
+    });
   }
 }
