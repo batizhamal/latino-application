@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:latino_app/auth/auth_page.dart';
-import 'package:latino_app/pages/home.dart';
+import 'package:latino_app/pages/home/home.dart';
 import 'package:latino_app/pages/splash_screen.dart';
 import 'package:latino_app/utils/theme/theme.dart';
 

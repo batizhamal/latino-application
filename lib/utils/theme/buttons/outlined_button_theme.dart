@@ -6,7 +6,7 @@ class MyOutlinedButtonTheme {
     style: OutlinedButton.styleFrom(
       foregroundColor: Color(mainDark),
       side: BorderSide(
-        color: Color(mainBLue),
+        color: Color(mainBlue),
       ),
     ),
   );

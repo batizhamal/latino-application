@@ -18,6 +18,15 @@ class MyTextTheme {
       fontWeight: FontWeight.bold,
       fontSize: 18,
     ),
+    headline4: GoogleFonts.montserrat(
+      color: Color(mainDark),
+      fontWeight: FontWeight.bold,
+      fontSize: 22,
+    ),
+    headline5: GoogleFonts.montserrat(
+      color: Colors.grey[500],
+      fontSize: 18,
+    ),
     bodyText1: GoogleFonts.montserrat(
       fontSize: 16,
     ),

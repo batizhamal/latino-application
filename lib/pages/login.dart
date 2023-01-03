@@ -8,7 +8,7 @@ import 'package:latino_app/components/my_textfield.dart';
 import 'package:http/http.dart' as http;
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
-import 'package:latino_app/pages/home.dart';
+import 'package:latino_app/pages/home/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -80,6 +80,19 @@ class _LoginPageState extends State<LoginPage> {
           MaterialPageRoute(builder: (BuildContext context) => HomePage()),
           (Route<dynamic> route) => false,
         );
+
+        var token = data['access_token'];
+
+        var responseProfile = await http.get(
+            Uri.parse("http://latino-parties.com/api/auth/profile"),
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': 'Bearer $token',
+            });
+        var role = json.decode(responseProfile.body)!["data"]["role"];
+
+        sharedPreferences.setString("role", role != null ? role : "");
       } else {
         setState(() {
           _loading = false;
@@ -113,127 +126,130 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Color(lightBlue),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.all(30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // image
-                Image.asset(
-                  twoDancersImage,
-                  height: size.height * 0.2,
-                ),
-                SizedBox(height: 25),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.all(30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // image
+                  Image.asset(
+                    twoDancersImage,
+                    height: 200,
+                  ),
+                  SizedBox(height: 25),
 
-                // Hello again!
-                Text(
-                  'Welcome back!',
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Plan, register for event, keep track.',
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
+                  // Hello again!
+                  Text(
+                    'Welcome back!',
+                    style: Theme.of(context).textTheme.headline1,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Plan, register for event, keep track.',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
 
-                Form(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextFormField(
-                          controller: _usernameController,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.person_outline_outlined),
-                            labelText: 'Username',
-                            hintText: 'Username',
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          controller: _passwordController,
-                          obscureText: !_passwordVisible,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.password_rounded),
-                            labelText: 'Username',
-                            hintText: 'Username',
-                            border: OutlineInputBorder(),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _passwordVisible = !_passwordVisible;
-                                });
-                              },
-                              icon: Icon(Icons.remove_red_eye_sharp),
+                  Form(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextFormField(
+                            controller: _usernameController,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.person_outline_outlined),
+                              labelText: 'Username',
+                              hintText: 'Username',
+                              border: OutlineInputBorder(),
                             ),
                           ),
-                        ),
-                        // SizedBox(height: 10),
-                        // TextButton(
-                        //   onPressed: () {},
-                        //   child: Align(
-                        //     alignment: Alignment.centerRight,
-                        //     child: Text(
-                        //       'Forgot password?',
-                        //       style: TextStyle(
-                        //         color: Colors.blue,
-                        //         fontSize: 14,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        Container(
-                          child: _errorMessage == null
-                              ? SizedBox(height: 10)
-                              : Column(
-                                  children: [
-                                    Text(
-                                      _errorMessage.toString(),
-                                      style: TextStyle(color: Color(mainRed)),
-                                    ),
-                                    SizedBox(height: 10),
-                                  ],
-                                ),
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: signIn,
-                            child: Text('LOGIN'),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: _passwordController,
+                            obscureText: !_passwordVisible,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.password_rounded),
+                              labelText: 'Username',
+                              hintText: 'Username',
+                              border: OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _passwordVisible = !_passwordVisible;
+                                  });
+                                },
+                                icon: Icon(Icons.remove_red_eye_sharp),
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // not a member? register now
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Not a member?',
-                      style: TextStyle(
-                        fontSize: 14,
+                          // SizedBox(height: 10),
+                          // TextButton(
+                          //   onPressed: () {},
+                          //   child: Align(
+                          //     alignment: Alignment.centerRight,
+                          //     child: Text(
+                          //       'Forgot password?',
+                          //       style: TextStyle(
+                          //         color: Colors.blue,
+                          //         fontSize: 14,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          Container(
+                            child: _errorMessage == null
+                                ? SizedBox(height: 10)
+                                : Column(
+                                    children: [
+                                      Text(
+                                        _errorMessage.toString(),
+                                        style: TextStyle(color: Color(mainRed)),
+                                      ),
+                                      SizedBox(height: 10),
+                                    ],
+                                  ),
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: signIn,
+                              child: Text('LOGIN'),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    GestureDetector(
-                      onTap: widget.showRegisterPage,
-                      child: Text(
-                        ' Sign up',
+                  ),
+
+                  // not a member? register now
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Not a member?',
                         style: TextStyle(
-                          color: Colors.blue,
                           fontSize: 14,
                         ),
                       ),
-                    )
-                  ],
-                )
-              ],
+                      GestureDetector(
+                        onTap: widget.showRegisterPage,
+                        child: Text(
+                          ' Sign up',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

@@ -128,7 +128,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Color(mainBLue), width: 1),
+                        border: Border.all(color: Color(mainBlue), width: 1),
                         borderRadius: BorderRadius.circular(5),
                         shape: BoxShape.rectangle,
                       ),

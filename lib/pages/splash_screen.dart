@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
-import 'package:latino_app/pages/home.dart';
+import 'package:latino_app/pages/home/home.dart';
 import 'package:latino_app/pages/welcome_screen.dart';
 
 class SplashScreen extends StatefulWidget {

@@ -6,7 +6,7 @@ import 'package:latino_app/components/hidden_drawer.dart';
 import 'package:latino_app/components/my_button.dart';
 import 'package:latino_app/components/my_textfield.dart';
 import 'package:latino_app/constants/color_codes.dart';
-import 'package:latino_app/pages/home.dart';
+import 'package:latino_app/pages/home/home.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;

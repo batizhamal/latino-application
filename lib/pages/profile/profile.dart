@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:latino_app/auth/auth_page.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
+import 'package:latino_app/pages/home/home.dart';
 import 'package:latino_app/pages/profile/information.dart';
 import 'package:latino_app/pages/profile/profile_menu_item.dart';
 import 'package:latino_app/pages/profile/settings.dart';
@@ -66,7 +67,6 @@ class _ProfilePageState extends State<ProfilePage> {
       _isLoading = false;
     });
 
-    print(response.body);
     setState(() {
       data = json.decode(response.body)["data"];
     });
@@ -98,7 +98,10 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+              (Route<dynamic> route) => false,
+            );
           },
           icon: Icon(Icons.arrow_back),
           color: Color(mainDark),
