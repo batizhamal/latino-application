@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:latino_app/auth/auth_page.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
 import 'package:latino_app/pages/profile/profile.dart';
@@ -28,12 +29,11 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
     _nameController.dispose();
     _surnameController.dispose();
     _usernameController.dispose();
     _phoneNumberController.dispose();
+    super.dispose();
   }
 
   Future updateProfile() async {
@@ -58,6 +58,14 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
       },
       body: body,
     );
+
+    if (response.statusCode != 200) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+            builder: (BuildContext context) => AuthPage(showLoginPage: true)),
+        (Route<dynamic> route) => false,
+      );
+    }
 
     setState(() {
       _loading = false;

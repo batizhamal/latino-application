@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:latino_app/auth/auth_page.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
+import 'package:latino_app/pages/profile/information.dart';
 import 'package:latino_app/pages/profile/profile_menu_item.dart';
+import 'package:latino_app/pages/profile/settings.dart';
 import 'package:latino_app/pages/profile/update_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -52,6 +54,14 @@ class _ProfilePageState extends State<ProfilePage> {
       'Authorization': 'Bearer $token',
     });
 
+    if (response.statusCode != 200) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+            builder: (BuildContext context) => AuthPage(showLoginPage: true)),
+        (Route<dynamic> route) => false,
+      );
+    }
+
     setState(() {
       _isLoading = false;
     });
@@ -60,6 +70,25 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       data = json.decode(response.body)["data"];
     });
+  }
+
+  logOut() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+
+    var token = sharedPreferences.getString("token");
+
+    var response = await http.post(
+      Uri.parse("http://latino-parties.com/api/auth/logout"),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+          builder: (BuildContext context) => AuthPage(showLoginPage: true)),
+      (Route<dynamic> route) => false,
+    );
   }
 
   @override
@@ -134,13 +163,32 @@ class _ProfilePageState extends State<ProfilePage> {
                     ProfileMenuWidget(
                       title: 'Information',
                       icon: Icons.info_outline,
-                      onPress: () {},
+                      onPress: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                InformationPage(data: data),
+                          ),
+                        );
+                      },
+                    ),
+                    Divider(),
+                    ProfileMenuWidget(
+                      title: 'Settings',
+                      icon: Icons.settings_outlined,
+                      onPress: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => SettingsPage(),
+                          ),
+                        );
+                      },
                     ),
                     Divider(),
                     ProfileMenuWidget(
                       title: 'Logout',
                       icon: Icons.logout,
-                      onPress: () {},
+                      onPress: logOut,
                       textColor: Colors.red,
                       endIcon: false,
                     )
