@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
 import 'package:latino_app/pages/welcome_screen.dart';
@@ -21,13 +22,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textScale = MediaQuery.of(context).textScaleFactor;
+
     return Scaffold(
       backgroundColor: const Color(lightBlue),
       body: SafeArea(
         child: Stack(
           children: [
             AnimatedPositioned(
-              duration: const  Duration(milliseconds: 1600),
+              duration: const Duration(milliseconds: 1600),
               top: animate ? 120 : 90,
               left: 30,
               child: Column(
@@ -35,11 +38,18 @@ class _SplashScreenState extends State<SplashScreen> {
                 children: [
                   Text(
                     'Latino Parties',
-                    style: Theme.of(context).textTheme.headline2,
+                    style: GoogleFonts.montserrat(
+                      color: const Color(mainDark),
+                      fontSize: 32.0 * textScale * 0.8,
+                    ),
                   ),
                   Text(
                     'Планируйте\nмероприятия с нами.',
-                    style: Theme.of(context).textTheme.headline1,
+                    style: GoogleFonts.montserrat(
+                      color: const Color(mainDark),
+                      fontSize: 32.0 * textScale * 0.8,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),

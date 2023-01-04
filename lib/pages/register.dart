@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home/home.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -56,12 +57,11 @@ class _RegisterPageState extends State<RegisterPage> {
   // sign up method
   Future signUp() async {
     if (passwordConfirmed()) {
-
       // loading circle
       showDialog(
           context: context,
           builder: (context) {
-            return const  Center(
+            return const Center(
               child: CircularProgressIndicator(
                 color: Colors.white,
               ),
@@ -99,7 +99,8 @@ class _RegisterPageState extends State<RegisterPage> {
         if (data != null) {
           sharedPreferences.setString("token", data['access_token']);
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => const HomePage()),
+            MaterialPageRoute(
+                builder: (BuildContext context) => const HomePage()),
             (Route<dynamic> route) => false,
           );
           var token = data['access_token'];
@@ -114,7 +115,6 @@ class _RegisterPageState extends State<RegisterPage> {
           var role = json.decode(responseProfile.body)!["data"]["role"];
 
           sharedPreferences.setString("role", role);
-
         }
       } else {
         var errorstring = "";
@@ -142,6 +142,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final textScale = MediaQuery.of(context).textScaleFactor;
+
     return Scaffold(
       backgroundColor: const Color(0xFFDEE4F6),
       body: SafeArea(
@@ -154,7 +156,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   Text(
                     'Регистрация',
-                    style: Theme.of(context).textTheme.headline1,
+                    style: GoogleFonts.montserrat(
+                      color: const Color(mainDark),
+                      fontSize: 32.0 * textScale * 0.8,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -164,7 +170,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   Form(
                     child: Container(
-                      padding:const EdgeInsets.symmetric(vertical: 30),
+                      padding: const EdgeInsets.symmetric(vertical: 30),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -265,7 +271,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                     children: [
                                       Text(
                                         _errorMessage.toString(),
-                                        style: const TextStyle(color: Color(mainRed)),
+                                        style: const TextStyle(
+                                            color: Color(mainRed)),
                                       ),
                                       const SizedBox(height: 10),
                                     ],

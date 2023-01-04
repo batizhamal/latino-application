@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home/home.dart';
@@ -94,7 +95,8 @@ class _EditEventPageState extends State<EditEventPage> {
         _editing = false;
 
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => const HomePage()),
+          MaterialPageRoute(
+              builder: (BuildContext context) => const HomePage()),
           (Route<dynamic> route) => false,
         );
       });
@@ -123,20 +125,23 @@ class _EditEventPageState extends State<EditEventPage> {
     });
 
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => const  HomePage()),
+      MaterialPageRoute(builder: (BuildContext context) => const HomePage()),
       (Route<dynamic> route) => false,
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final textScale = MediaQuery.of(context).textScaleFactor;
+
     return Scaffold(
       backgroundColor: const Color(lightBlue),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (BuildContext context) => const HomePage()),
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const HomePage()),
               (Route<dynamic> route) => false,
             );
           },
@@ -145,7 +150,11 @@ class _EditEventPageState extends State<EditEventPage> {
         ),
         title: Text(
           'Редактировать мероприятие',
-          style: Theme.of(context).textTheme.headline3,
+          style: GoogleFonts.montserrat(
+            color: const Color(mainDark),
+            fontWeight: FontWeight.bold,
+            fontSize: 18 * textScale * 0.8,
+          ),
         ),
         backgroundColor: const Color(lightBlue),
         elevation: 0,

@@ -13,6 +13,8 @@ class InformationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textScale = MediaQuery.of(context).textScaleFactor;
+
     return Scaffold(
       backgroundColor: const Color(lightBlue),
       appBar: AppBar(
@@ -25,7 +27,11 @@ class InformationPage extends StatelessWidget {
         ),
         title: Text(
           'Персональные данные',
-          style: Theme.of(context).textTheme.headline3,
+          style: GoogleFonts.montserrat(
+            color: const Color(mainDark),
+            fontWeight: FontWeight.bold,
+            fontSize: 18 * textScale * 0.8,
+          ),
         ),
         backgroundColor: const Color(lightBlue),
         elevation: 0,

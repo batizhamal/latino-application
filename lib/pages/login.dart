@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
@@ -32,7 +33,6 @@ class _LoginPageState extends State<LoginPage> {
 
   // signIn method
   Future signIn() async {
-
     // loading circle
     showDialog(
         context: context,
@@ -67,7 +67,8 @@ class _LoginPageState extends State<LoginPage> {
       if (data != null) {
         sharedPreferences.setString("token", data['access_token']);
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => const HomePage()),
+          MaterialPageRoute(
+              builder: (BuildContext context) => const HomePage()),
           (Route<dynamic> route) => false,
         );
 
@@ -108,6 +109,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final textScale = MediaQuery.of(context).textScaleFactor;
 
     return Scaffold(
       backgroundColor: const Color(lightBlue),
@@ -129,7 +131,11 @@ class _LoginPageState extends State<LoginPage> {
                   // Hello again!
                   Text(
                     'С возвращением!',
-                    style: Theme.of(context).textTheme.headline1,
+                    style: GoogleFonts.montserrat(
+                      color: const Color(mainDark),
+                      fontSize: 32.0 * textScale * 0.8,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -195,7 +201,8 @@ class _LoginPageState extends State<LoginPage> {
                                     children: [
                                       Text(
                                         _errorMessage.toString(),
-                                        style: const TextStyle(color: Color(mainRed)),
+                                        style: const TextStyle(
+                                            color: Color(mainRed)),
                                       ),
                                       const SizedBox(height: 10),
                                     ],

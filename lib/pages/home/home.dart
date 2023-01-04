@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home/create_event.dart';
@@ -43,7 +44,8 @@ class _HomePageState extends State<HomePage> {
 
     if (sharedPreferences.getString("token") == null) {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => const WelcomePage()),
+          MaterialPageRoute(
+              builder: (BuildContext context) => const WelcomePage()),
           (Route<dynamic> route) => false);
     }
   }
@@ -280,13 +282,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final textScale = MediaQuery.of(context).textScaleFactor;
+
     return Scaffold(
       backgroundColor: const Color(lightBlue),
       appBar: AppBar(
         backgroundColor: const Color(lightBlue),
         elevation: 0,
-        title:
-            Text('Мероприятия', style: Theme.of(context).textTheme.headline3),
+        title: Text(
+          'Мероприятия',
+          style: GoogleFonts.montserrat(
+            color: const Color(mainDark),
+            fontWeight: FontWeight.bold,
+            fontSize: 18 * textScale * 0.8,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -319,12 +329,19 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               Text(
                                 DateFormat.yMMMMd('ru').format(DateTime.now()),
-                                style: Theme.of(context).textTheme.headline5,
+                                style: GoogleFonts.montserrat(
+                                  color: Colors.grey[500],
+                                  fontSize: 18 * textScale * 0.8,
+                                ),
                               ),
-                              const  SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Text(
                                 'Сегодня',
-                                style: Theme.of(context).textTheme.headline4,
+                                style: GoogleFonts.montserrat(
+                                  color: const Color(mainDark),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22 * textScale * 0.8,
+                                ),
                               ),
                             ],
                           ),
@@ -353,20 +370,20 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 10),
                       DatePicker(
-                          DateTime.now(),
-                          height: 100,
-                          width: 80,
-                          locale: 'ru',
-                          initialSelectedDate: DateTime.now(),
-                          selectionColor: const Color(mainBlue),
-                          selectedTextColor: Colors.white,
-                          onDateChange: (date) {
-                            setState(() {
-                              _selectedDate = date;
-                            });
-                            filterEvents();
-                          },
-                        ),
+                        DateTime.now(),
+                        height: 100,
+                        width: 80,
+                        locale: 'ru',
+                        initialSelectedDate: DateTime.now(),
+                        selectionColor: const Color(mainBlue),
+                        selectedTextColor: Colors.white,
+                        onDateChange: (date) {
+                          setState(() {
+                            _selectedDate = date;
+                          });
+                          filterEvents();
+                        },
+                      ),
 
                       const Divider(),
 

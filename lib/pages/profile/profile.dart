@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:latino_app/auth/auth_page.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
@@ -38,7 +39,8 @@ class _ProfilePageState extends State<ProfilePage> {
     if (sharedPreferences.getString("token") == null) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (BuildContext context) => const AuthPage(showLoginPage: true)),
+              builder: (BuildContext context) =>
+                  const AuthPage(showLoginPage: true)),
           (Route<dynamic> route) => false);
     }
   }
@@ -58,7 +60,8 @@ class _ProfilePageState extends State<ProfilePage> {
     if (response.statusCode != 200) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-            builder: (BuildContext context) => const AuthPage(showLoginPage: true)),
+            builder: (BuildContext context) =>
+                const AuthPage(showLoginPage: true)),
         (Route<dynamic> route) => false,
       );
     }
@@ -86,20 +89,24 @@ class _ProfilePageState extends State<ProfilePage> {
 
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-          builder: (BuildContext context) => const AuthPage(showLoginPage: true)),
+          builder: (BuildContext context) =>
+              const AuthPage(showLoginPage: true)),
       (Route<dynamic> route) => false,
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final textScale = MediaQuery.of(context).textScaleFactor;
+
     return Scaffold(
       backgroundColor: const Color(lightBlue),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (BuildContext context) => const HomePage()),
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const HomePage()),
               (Route<dynamic> route) => false,
             );
           },
@@ -108,7 +115,11 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         title: Text(
           'Профиль',
-          style: Theme.of(context).textTheme.headline3,
+          style: GoogleFonts.montserrat(
+            color: const Color(mainDark),
+            fontWeight: FontWeight.bold,
+            fontSize: 18 * textScale * 0.8,
+          ),
         ),
         backgroundColor: const Color(lightBlue),
         elevation: 0,
@@ -135,7 +146,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 10),
                     Text(
                       data["name"] + " " + data["surname"],
-                      style: Theme.of(context).textTheme.headline3,
+                      style: GoogleFonts.montserrat(
+                        color: const Color(mainDark),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18 * textScale * 0.8,
+                      ),
                     ),
                     Text(
                       data["email"],
@@ -183,7 +198,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       onPress: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (BuildContext context) => const SettingsPage(),
+                            builder: (BuildContext context) =>
+                                const SettingsPage(),
                           ),
                         );
                       },

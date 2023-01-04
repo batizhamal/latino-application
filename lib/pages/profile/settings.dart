@@ -53,7 +53,8 @@ class _SettingsPageState extends State<SettingsPage> {
       if (response.statusCode != 200) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (BuildContext context) => const AuthPage(showLoginPage: true)),
+              builder: (BuildContext context) =>
+                  const AuthPage(showLoginPage: true)),
           (Route<dynamic> route) => false,
         );
       }
@@ -86,7 +87,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-            builder: (BuildContext context) => const AuthPage(showLoginPage: true)),
+            builder: (BuildContext context) =>
+                const AuthPage(showLoginPage: true)),
         (Route<dynamic> route) => false,
       );
     }
@@ -94,6 +96,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final textScale = MediaQuery.of(context).textScaleFactor;
+
     return Scaffold(
       backgroundColor: const Color(lightBlue),
       appBar: AppBar(
@@ -101,12 +105,16 @@ class _SettingsPageState extends State<SettingsPage> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: const  Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           color: const Color(mainDark),
         ),
         title: Text(
           'Настройки',
-          style: Theme.of(context).textTheme.headline3,
+          style: GoogleFonts.montserrat(
+            color: const Color(mainDark),
+            fontWeight: FontWeight.bold,
+            fontSize: 18 * textScale * 0.8,
+          ),
         ),
         backgroundColor: const Color(lightBlue),
         elevation: 0,
@@ -125,7 +133,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        border: Border.all(color: const Color(mainBlue), width: 1),
+                        border:
+                            Border.all(color: const Color(mainBlue), width: 1),
                         borderRadius: BorderRadius.circular(5),
                         shape: BoxShape.rectangle,
                       ),
@@ -191,8 +200,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       left: 20,
                       top: 2,
                       child: Container(
-                        padding:
-                            const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                        padding: const EdgeInsets.only(
+                            bottom: 10, left: 10, right: 10),
                         color: const Color(lightBlue),
                         child: Text(
                           'Сменить пароль',
@@ -218,7 +227,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
                       decoration: BoxDecoration(
-                        border: Border.all(color: const Color(mainRed), width: 1),
+                        border:
+                            Border.all(color: const Color(mainRed), width: 1),
                         borderRadius: BorderRadius.circular(5),
                         shape: BoxShape.rectangle,
                       ),
@@ -239,9 +249,9 @@ class _SettingsPageState extends State<SettingsPage> {
                             child: ElevatedButton(
                                 onPressed: deleteProfile,
                                 child: _deleting
-                                    ?  const CircularProgressIndicator(
+                                    ? const CircularProgressIndicator(
                                         color: Colors.white)
-                                    :  const Text('Все равно удалить'),
+                                    : const Text('Все равно удалить'),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(mainRed),
                                 )),
@@ -253,8 +263,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       left: 20,
                       top: 2,
                       child: Container(
-                        padding:
-                            const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                        padding: const EdgeInsets.only(
+                            bottom: 10, left: 10, right: 10),
                         color: const Color(lightBlue),
                         child: Text(
                           'Удалить учетную запись',

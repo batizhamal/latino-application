@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:latino_app/auth/auth_page.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
@@ -69,7 +70,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     if (response.statusCode != 200) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-            builder: (BuildContext context) => const AuthPage(showLoginPage: true)),
+            builder: (BuildContext context) =>
+                const AuthPage(showLoginPage: true)),
         (Route<dynamic> route) => false,
       );
     }
@@ -77,7 +79,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     setState(() {
       _loading = false;
     });
-
 
     if (response.statusCode != 200) {
       var errorstring = "";
@@ -95,6 +96,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final textScale = MediaQuery.of(context).textScaleFactor;
+
     return Scaffold(
       backgroundColor: const Color(lightBlue),
       appBar: AppBar(
@@ -105,11 +108,15 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
             Navigator.of(context).pop();
           },
           icon: const Icon(Icons.arrow_back),
-          color:const  Color(mainDark),
+          color: const Color(mainDark),
         ),
         title: Text(
           'Редактировать профиль',
-          style: Theme.of(context).textTheme.headline3,
+          style: GoogleFonts.montserrat(
+            color: const Color(mainDark),
+            fontWeight: FontWeight.bold,
+            fontSize: 18 * textScale * 0.8,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -179,7 +186,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                                 children: [
                                   Text(
                                     _errorMessage.toString(),
-                                    style: const TextStyle(color: Color(mainRed)),
+                                    style:
+                                        const TextStyle(color: Color(mainRed)),
                                   ),
                                   const SizedBox(height: 10),
                                 ],
@@ -191,7 +199,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                         child: ElevatedButton(
                           onPressed: updateProfile,
                           child: _loading
-                              ? const CircularProgressIndicator(color: Colors.white)
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white)
                               : const Text('Сохранить'),
                         ),
                       ),
