@@ -6,12 +6,12 @@ class MyTextTheme {
   static final lightTextTheme = TextTheme(
     headline1: GoogleFonts.montserrat(
       color: const Color(mainDark),
-      fontSize: 32,
+      fontSize: 24,
       fontWeight: FontWeight.bold,
     ),
     headline2: GoogleFonts.montserrat(
-      color:const Color(mainDark),
-      fontSize: 32,
+      color: const Color(mainDark),
+      fontSize: 24,
     ),
     headline3: GoogleFonts.montserrat(
       color: const Color(mainDark),

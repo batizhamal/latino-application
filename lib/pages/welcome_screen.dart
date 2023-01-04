@@ -35,7 +35,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     'Привет, танцор!',
                     style: GoogleFonts.montserrat(
                       color: const Color(mainDark),
-                      fontSize: 32.0 * textScale * 0.8,
+                      fontSize: 24.0 * textScale * 0.99,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -77,6 +77,10 @@ class _WelcomePageState extends State<WelcomePage> {
                         );
                       },
                       child: const Text('Вход'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(mainRed),
+                        elevation: 0,
+                      ),
                     ),
                   ),
                 ],

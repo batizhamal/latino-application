@@ -12,6 +12,7 @@ class MyAppTheme {
     elevatedButtonTheme: MyElevatedButtonTheme.lightElevatedButtonTheme,
   );
   static ThemeData darkTheme = ThemeData(
+    primarySwatch: mainDarkSwatch,
     textTheme: MyTextTheme.darkTextTheme,
     outlinedButtonTheme: MyOutlinedButtonTheme.darkOutlinedButtonTheme,
     elevatedButtonTheme: MyElevatedButtonTheme.darkElevatedButtonTheme,

@@ -102,7 +102,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
           style: GoogleFonts.montserrat(
             color: const Color(mainDark),
             fontWeight: FontWeight.bold,
-            fontSize: 18 * textScale * 0.8,
+            fontSize: 18 * textScale * 0.99,
           ),
         ),
         backgroundColor: const Color(lightBlue),
@@ -186,6 +186,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                   ),
                                 )
                               : const Text('Создать'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(mainRed),
+                            elevation: 0,
+                          ),
                         ),
                       ),
                     ],

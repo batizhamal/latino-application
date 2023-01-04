@@ -40,14 +40,14 @@ class _SplashScreenState extends State<SplashScreen> {
                     'Latino Parties',
                     style: GoogleFonts.montserrat(
                       color: const Color(mainDark),
-                      fontSize: 32.0 * textScale * 0.8,
+                      fontSize: 24.0 * textScale * 0.99,
                     ),
                   ),
                   Text(
                     'Планируйте\nмероприятия с нами.',
                     style: GoogleFonts.montserrat(
                       color: const Color(mainDark),
-                      fontSize: 32.0 * textScale * 0.8,
+                      fontSize: 24.0 * textScale * 0.99,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

@@ -118,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
           style: GoogleFonts.montserrat(
             color: const Color(mainDark),
             fontWeight: FontWeight.bold,
-            fontSize: 18 * textScale * 0.8,
+            fontSize: 18 * textScale * 0.99,
           ),
         ),
         backgroundColor: const Color(lightBlue),
@@ -149,7 +149,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: GoogleFonts.montserrat(
                         color: const Color(mainDark),
                         fontWeight: FontWeight.bold,
-                        fontSize: 18 * textScale * 0.8,
+                        fontSize: 18 * textScale * 0.99,
                       ),
                     ),
                     Text(

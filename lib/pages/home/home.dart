@@ -294,7 +294,7 @@ class _HomePageState extends State<HomePage> {
           style: GoogleFonts.montserrat(
             color: const Color(mainDark),
             fontWeight: FontWeight.bold,
-            fontSize: 18 * textScale * 0.8,
+            fontSize: 18 * textScale * 0.99,
           ),
         ),
         actions: [
@@ -331,7 +331,7 @@ class _HomePageState extends State<HomePage> {
                                 DateFormat.yMMMMd('ru').format(DateTime.now()),
                                 style: GoogleFonts.montserrat(
                                   color: Colors.grey[500],
-                                  fontSize: 18 * textScale * 0.8,
+                                  fontSize: 18 * textScale * 0.99,
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -340,7 +340,7 @@ class _HomePageState extends State<HomePage> {
                                 style: GoogleFonts.montserrat(
                                   color: const Color(mainDark),
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 22 * textScale * 0.8,
+                                  fontSize: 22 * textScale * 0.99,
                                 ),
                               ),
                             ],

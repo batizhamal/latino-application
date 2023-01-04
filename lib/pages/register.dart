@@ -158,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     'Регистрация',
                     style: GoogleFonts.montserrat(
                       color: const Color(mainDark),
-                      fontSize: 32.0 * textScale * 0.8,
+                      fontSize: 24.0 * textScale * 0.99,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -284,6 +284,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: ElevatedButton(
                               onPressed: signUp,
                               child: const Text('Зарегистрироваться'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(mainRed),
+                                elevation: 0,
+                              ),
                             ),
                           ),
                         ],
