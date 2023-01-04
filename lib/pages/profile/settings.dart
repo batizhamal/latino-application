@@ -108,7 +108,7 @@ class _SettingsPageState extends State<SettingsPage> {
           color: Color(mainDark),
         ),
         title: Text(
-          'Settings',
+          'Настройки',
           style: Theme.of(context).textTheme.headline3,
         ),
         backgroundColor: Color(lightBlue),
@@ -140,8 +140,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             obscureText: !_passwordVisible,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.fingerprint),
-                              labelText: 'New password',
-                              hintText: 'New password',
+                              labelText: 'Новый пароль',
+                              hintText: 'Новый пароль',
                               border: OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
@@ -159,8 +159,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             obscureText: !_confirmPasswordVisible,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.password),
-                              labelText: 'Condirm password',
-                              hintText: 'Confirm password',
+                              labelText: 'Подтвердить пароль',
+                              hintText: 'Подтвердить пароль',
                               border: OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
@@ -184,7 +184,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               child: _saving
                                   ? CircularProgressIndicator(
                                       color: Colors.white)
-                                  : Text('Save'),
+                                  : Text('Сохранить'),
                             ),
                           ),
                         ],
@@ -198,7 +198,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             EdgeInsets.only(bottom: 10, left: 10, right: 10),
                         color: Color(lightBlue),
                         child: Text(
-                          'Change password',
+                          'Сменить пароль',
                           style: GoogleFonts.montserrat(
                             color: Color(mainDark),
                             fontSize: 14,
@@ -229,7 +229,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'After this action is done, you will not be able to login with the same authorization data.',
+                            'После этого, вы не сможете зайти в учетную запись под такими же данными.',
                             style: GoogleFonts.montserrat(
                               color: Color(mainRed),
                               fontSize: 16,
@@ -244,7 +244,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 child: _deleting
                                     ? CircularProgressIndicator(
                                         color: Colors.white)
-                                    : Text('Delete anyway'),
+                                    : Text('Все равно удалить'),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Color(mainRed),
                                 )),
@@ -260,7 +260,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             EdgeInsets.only(bottom: 10, left: 10, right: 10),
                         color: Color(lightBlue),
                         child: Text(
-                          'Delete profile',
+                          'Удалить учетную запись',
                           style: GoogleFonts.montserrat(
                             color: Color(darkRed),
                             fontSize: 14,

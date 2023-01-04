@@ -24,7 +24,7 @@ class InformationPage extends StatelessWidget {
           color: Color(mainDark),
         ),
         title: Text(
-          'Personal information',
+          'Персональные данные',
           style: Theme.of(context).textTheme.headline3,
         ),
         backgroundColor: Color(lightBlue),
@@ -46,7 +46,7 @@ class InformationPage extends StatelessWidget {
               ),
               SizedBox(height: 40),
               Text(
-                'Firstname',
+                'Имя',
                 style: GoogleFonts.montserrat(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -59,7 +59,7 @@ class InformationPage extends StatelessWidget {
               Divider(),
               SizedBox(height: 10),
               Text(
-                'Lastname',
+                'Фамилия',
                 style: GoogleFonts.montserrat(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class InformationPage extends StatelessWidget {
               Divider(),
               SizedBox(height: 10),
               Text(
-                'Email',
+                'E-mail',
                 style: GoogleFonts.montserrat(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -86,7 +86,7 @@ class InformationPage extends StatelessWidget {
               Divider(),
               SizedBox(height: 10),
               Text(
-                'Phone number',
+                'Номер телефона',
                 style: GoogleFonts.montserrat(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -100,7 +100,7 @@ class InformationPage extends StatelessWidget {
               Divider(),
               SizedBox(height: 10),
               Text(
-                'Role',
+                'Роль',
                 style: GoogleFonts.montserrat(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,

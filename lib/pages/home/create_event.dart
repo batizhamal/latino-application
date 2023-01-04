@@ -1,6 +1,7 @@
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/locale.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home/home.dart';
 import 'package:http/http.dart' as http;
@@ -94,7 +95,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
           color: Color(mainDark),
         ),
         title: Text(
-          'Create event',
+          'Создать мероприятие',
           style: Theme.of(context).textTheme.headline3,
         ),
         backgroundColor: Color(lightBlue),
@@ -114,8 +115,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         controller: _titleController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.title),
-                          labelText: 'Title',
-                          hintText: 'Title',
+                          labelText: 'Название',
+                          hintText: 'Название',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -124,8 +125,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         controller: _descriptionController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.description),
-                          labelText: 'Description',
-                          hintText: 'Description',
+                          labelText: 'Описание',
+                          hintText: 'Описание',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -150,8 +151,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         controller: _priceController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.money),
-                          labelText: 'Price',
-                          hintText: 'Price',
+                          labelText: 'Вход',
+                          hintText: 'Вход',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -160,8 +161,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         controller: _addressController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.location_on_outlined),
-                          labelText: 'Address',
-                          hintText: 'Address',
+                          labelText: 'Место проведения',
+                          hintText: 'Место проведения',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -177,7 +178,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                     color: Colors.white,
                                   ),
                                 )
-                              : Text('Create'),
+                              : Text('Создать'),
                         ),
                       ),
                     ],

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home/create_event.dart';
@@ -26,7 +25,6 @@ class _HomePageState extends State<HomePage> {
   DateTime _selectedDate = DateTime.now();
   bool _loading = false;
   bool _canCreate = false;
-  bool _registering = false;
 
   @override
   void initState() {
@@ -52,8 +50,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   getAllEvents() async {
+    final sharedPrederences = await SharedPreferences.getInstance();
+    var token = sharedPrederences.getString("token");
+
     var response = await http.get(
       Uri.parse("http://latino-parties.com/api/events"),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
     );
 
     var sharedPreferences = await SharedPreferences.getInstance();
@@ -147,22 +151,31 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.white,
                           )
                         : Container(),
-                    _registering
-                        ? Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          )
-                        : IconButton(
+                    event["status"] == 'Не зарегистрирован'
+                        ? IconButton(
                             onPressed: () {
                               registerForEvent(event["id"]);
+                              getAllEvents();
                             },
                             icon: Icon(
                               Icons.add,
                               size: 14,
                             ),
                             color: Colors.white,
-                          ),
+                          )
+                        : event["status"] == 'Зарегистрирован'
+                            ? IconButton(
+                                onPressed: () {
+                                  unRegisterFromEvent(event["id"]);
+                                  getAllEvents();
+                                },
+                                icon: Icon(
+                                  Icons.done,
+                                  size: 14,
+                                ),
+                                color: Colors.white,
+                              )
+                            : Container(),
                   ],
                 ),
               ],
@@ -228,7 +241,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             Text(
-              "Информация: ",
+              "Описание: ",
               style: TextStyle(
                 fontSize: 14,
                 color: Color(lightYellow),
@@ -240,6 +253,15 @@ class _HomePageState extends State<HomePage> {
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
+              ),
+            ),
+            Divider(color: Color(mainDark)),
+            Text(
+              event["status"],
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Color(mainDark),
               ),
             ),
           ],
@@ -264,7 +286,8 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Color(lightBlue),
         elevation: 0,
-        title: Text('Events', style: Theme.of(context).textTheme.headline3),
+        title:
+            Text('Мероприятия', style: Theme.of(context).textTheme.headline3),
         actions: [
           IconButton(
             onPressed: () {
@@ -296,19 +319,19 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                DateFormat.yMMMMd().format(DateTime.now()),
+                                DateFormat.yMMMMd('ru').format(DateTime.now()),
                                 style: Theme.of(context).textTheme.headline5,
                               ),
                               SizedBox(height: 10),
                               Text(
-                                'Today',
+                                'Сегодня',
                                 style: Theme.of(context).textTheme.headline4,
                               ),
                             ],
                           ),
                           _canCreate
                               ? SizedBox(
-                                  width: 100,
+                                  width: 120,
                                   height: 40,
                                   child: ElevatedButton(
                                     onPressed: () {
@@ -320,7 +343,7 @@ class _HomePageState extends State<HomePage> {
                                         (Route<dynamic> route) => false,
                                       );
                                     },
-                                    child: Text('+ Create'),
+                                    child: Text('+  Создать'),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Color(darkYellow),
                                     ),
@@ -335,6 +358,7 @@ class _HomePageState extends State<HomePage> {
                           DateTime.now(),
                           height: 100,
                           width: 80,
+                          locale: 'ru',
                           initialSelectedDate: DateTime.now(),
                           selectionColor: Color(mainBlue),
                           selectedTextColor: Colors.white,
@@ -362,10 +386,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   registerForEvent(int id) async {
-    setState(() {
-      _registering = true;
-    });
-
     final sharedPrederences = await SharedPreferences.getInstance();
     var token = sharedPrederences.getString("token");
 
@@ -375,9 +395,17 @@ class _HomePageState extends State<HomePage> {
         'Authorization': 'Bearer $token',
       },
     );
+  }
 
-    setState(() {
-      _registering = false;
-    });
+  unRegisterFromEvent(int id) async {
+    final sharedPrederences = await SharedPreferences.getInstance();
+    var token = sharedPrederences.getString("token");
+
+    var response = await http.delete(
+      Uri.parse("http://latino-parties.com/api/events/$id/cancel-registration"),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
   }
 }

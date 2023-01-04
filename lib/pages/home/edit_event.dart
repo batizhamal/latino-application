@@ -144,7 +144,7 @@ class _EditEventPageState extends State<EditEventPage> {
           color: Color(mainDark),
         ),
         title: Text(
-          'Create event',
+          'Редактировать мероприятие',
           style: Theme.of(context).textTheme.headline3,
         ),
         backgroundColor: Color(lightBlue),
@@ -164,8 +164,8 @@ class _EditEventPageState extends State<EditEventPage> {
                         controller: _titleController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.title),
-                          labelText: 'Title',
-                          hintText: 'Title',
+                          labelText: 'Название',
+                          hintText: 'Название',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -174,8 +174,8 @@ class _EditEventPageState extends State<EditEventPage> {
                         controller: _descriptionController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.description),
-                          labelText: 'Description',
-                          hintText: 'Description',
+                          labelText: 'Описание',
+                          hintText: 'Описание',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -200,8 +200,8 @@ class _EditEventPageState extends State<EditEventPage> {
                         controller: _priceController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.money),
-                          labelText: 'Price',
-                          hintText: 'Price',
+                          labelText: 'Вход',
+                          hintText: 'Вход',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -210,8 +210,8 @@ class _EditEventPageState extends State<EditEventPage> {
                         controller: _addressController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.location_on_outlined),
-                          labelText: 'Address',
-                          hintText: 'Address',
+                          labelText: 'Место проведения',
+                          hintText: 'Место проведение',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -227,7 +227,7 @@ class _EditEventPageState extends State<EditEventPage> {
                                     color: Colors.white,
                                   ),
                                 )
-                              : Text('Save'),
+                              : Text('Сохранить'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(darkYellow),
                           ),
@@ -244,7 +244,7 @@ class _EditEventPageState extends State<EditEventPage> {
                           : TextButton(
                               onPressed: deleteEvent,
                               child: Text(
-                                'Delete event',
+                                'Удалить мероприятие',
                                 style: TextStyle(
                                   color: Color(mainRed),
                                 ),

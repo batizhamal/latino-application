@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:latino_app/auth/auth_page.dart';
-import 'package:latino_app/pages/home/home.dart';
 import 'package:latino_app/pages/splash_screen.dart';
 import 'package:latino_app/utils/theme/theme.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,6 +12,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting('ru');
     return MaterialApp(
       home: SplashScreen(),
       debugShowCheckedModeBanner: false,

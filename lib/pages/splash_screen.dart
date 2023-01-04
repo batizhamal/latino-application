@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     style: Theme.of(context).textTheme.headline2,
                   ),
                   Text(
-                    'Plan events. \nCompletely free',
+                    'Планируйте\nмероприятия с нами.',
                     style: Theme.of(context).textTheme.headline1,
                   ),
                 ],

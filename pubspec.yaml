@@ -105,5 +105,5 @@ flutter:
 flutter_native_splash:
   color: "#DEE4F6"
   color_dark: "#DEE4F6"
-  image: assets/images/nulatinosdclogo.png
-  image_dark: assets/images/nulatinosdclogo.png
+  image: assets/images/logo.png
+  image_dark: assets/images/logo.png

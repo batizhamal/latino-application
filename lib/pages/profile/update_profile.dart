@@ -9,23 +9,31 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class UpdateProfilePage extends StatefulWidget {
-  UpdateProfilePage({super.key});
+  UpdateProfilePage({super.key, required this.data});
+  final data;
 
   @override
   State<UpdateProfilePage> createState() => _UpdateProfilePageState();
 }
 
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
-  final _nameController = TextEditingController();
-
-  final _surnameController = TextEditingController();
-
-  final _usernameController = TextEditingController();
-
-  final _phoneNumberController = TextEditingController();
+  var _nameController = TextEditingController();
+  var _surnameController = TextEditingController();
+  var _usernameController = TextEditingController();
+  var _phoneNumberController = TextEditingController();
 
   String? _errorMessage = null;
   bool _loading = false;
+
+  @override
+  void initState() {
+    _nameController = TextEditingController(text: widget.data["name"]);
+    _surnameController = TextEditingController(text: widget.data["surname"]);
+    _usernameController = TextEditingController(text: widget.data["email"]);
+    _phoneNumberController =
+        TextEditingController(text: widget.data["phone_number"]);
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -102,7 +110,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
           color: Color(mainDark),
         ),
         title: Text(
-          'Edit profile',
+          'Редактировать профиль',
           style: Theme.of(context).textTheme.headline3,
         ),
       ),
@@ -130,8 +138,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                         controller: _nameController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.person_outline_outlined),
-                          labelText: 'Firstname',
-                          hintText: 'Firstname',
+                          labelText: 'Имя',
+                          hintText: 'Имя',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -140,8 +148,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                         controller: _surnameController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.person_outline_outlined),
-                          labelText: 'Lastname',
-                          hintText: 'Lastname',
+                          labelText: 'Фамилия',
+                          hintText: 'Фамилия',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -150,8 +158,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                         controller: _usernameController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.mail),
-                          labelText: 'Email',
-                          hintText: 'Email',
+                          labelText: 'E-mail',
+                          hintText: 'E-mail',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -160,8 +168,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                         controller: _phoneNumberController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.phone_outlined),
-                          labelText: 'Phone number',
-                          hintText: 'Phone number',
+                          labelText: 'Номер телефона',
+                          hintText: 'Номер телефона',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -186,7 +194,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                           onPressed: updateProfile,
                           child: _loading
                               ? CircularProgressIndicator(color: Colors.white)
-                              : Text('Save'),
+                              : Text('Сохранить'),
                         ),
                       ),
                     ],

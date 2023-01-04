@@ -150,13 +150,14 @@ class _LoginPageState extends State<LoginPage> {
 
                   // Hello again!
                   Text(
-                    'Welcome back!',
+                    'С возвращением!',
                     style: Theme.of(context).textTheme.headline1,
                   ),
                   SizedBox(height: 10),
                   Text(
-                    'Plan, register for event, keep track.',
+                    'Планируйте и регистрируйтесь на мероприятия',
                     style: Theme.of(context).textTheme.bodyText1,
+                    textAlign: TextAlign.center,
                   ),
 
                   Form(
@@ -169,8 +170,8 @@ class _LoginPageState extends State<LoginPage> {
                             controller: _usernameController,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.person_outline_outlined),
-                              labelText: 'Username',
-                              hintText: 'Username',
+                              labelText: 'Логин',
+                              hintText: 'Логин',
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -180,8 +181,8 @@ class _LoginPageState extends State<LoginPage> {
                             obscureText: !_passwordVisible,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.password_rounded),
-                              labelText: 'Username',
-                              hintText: 'Username',
+                              labelText: 'Пароль',
+                              hintText: 'Пароль',
                               border: OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
@@ -227,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 50,
                             child: ElevatedButton(
                               onPressed: signIn,
-                              child: Text('LOGIN'),
+                              child: Text('Войти'),
                             ),
                           ),
                         ],
@@ -240,7 +241,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Not a member?',
+                        'Нет аккаунта?',
                         style: TextStyle(
                           fontSize: 14,
                         ),
@@ -248,7 +249,7 @@ class _LoginPageState extends State<LoginPage> {
                       GestureDetector(
                         onTap: widget.showRegisterPage,
                         child: Text(
-                          ' Sign up',
+                          ' Зарегистрироваться',
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,

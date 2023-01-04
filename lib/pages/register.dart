@@ -175,12 +175,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Register',
+                    'Регистрация',
                     style: Theme.of(context).textTheme.headline1,
                   ),
                   SizedBox(height: 10),
                   Text(
-                    'Enter your details below to register',
+                    'Введите свои данные ниже для регистрации',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
 
@@ -194,8 +194,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             controller: _nameController,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.person_outline_outlined),
-                              labelText: 'Fullname',
-                              hintText: 'Fullname',
+                              labelText: 'ФИ',
+                              hintText: 'ФИ',
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -204,8 +204,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             controller: _usernameController,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.mail),
-                              labelText: 'Email',
-                              hintText: 'Email',
+                              labelText: 'E-mail',
+                              hintText: 'E-mail',
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -214,8 +214,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             controller: _phoneNumberController,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.phone_outlined),
-                              labelText: 'Phone number',
-                              hintText: 'Phone number',
+                              labelText: 'Номер телефона',
+                              hintText: 'Номер телефона',
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -232,7 +232,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                             icon: Icon(LineAwesomeIcons.angle_down),
                             decoration: InputDecoration(
-                              labelText: 'Role',
+                              labelText: 'Роль',
                               prefixIcon: Icon(Icons.accessibility_outlined),
                               border: OutlineInputBorder(),
                             ),
@@ -243,8 +243,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             obscureText: !_passwordVisible,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.fingerprint),
-                              labelText: 'Password',
-                              hintText: 'Password',
+                              labelText: 'Пароль',
+                              hintText: 'Пароль',
                               border: OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
@@ -264,8 +264,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             obscureText: !_confirmPasswordVisible,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.password),
-                              labelText: 'Password',
-                              hintText: 'Password',
+                              labelText: 'Подтвердить пароль',
+                              hintText: 'Подтвердить пароль',
                               border: OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
@@ -298,7 +298,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             height: 50,
                             child: ElevatedButton(
                               onPressed: signUp,
-                              child: Text('SIGNUP'),
+                              child: Text('Зарегистрироваться'),
                             ),
                           ),
                         ],
@@ -310,10 +310,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Already a member?'),
+                      Text('Уже есть аккаунт?'),
                       GestureDetector(
                         onTap: widget.showLoginPage,
-                        child: Text(' Sign in',
+                        child: Text(' Войти',
                             style: TextStyle(
                               color: Colors.blue,
                               fontWeight: FontWeight.bold,

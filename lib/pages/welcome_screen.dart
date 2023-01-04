@@ -34,13 +34,14 @@ class _WelcomePageState extends State<WelcomePage> {
                 Column(
                   children: [
                     Text(
-                      'Hello, social dancer!',
+                      'Привет, танцор!',
                       style: Theme.of(context).textTheme.headline1,
                     ),
                     SizedBox(height: 10),
                     Text(
-                      'Let us help you plan your parties',
+                      'Мы поможем тебе планировать латино мероприятия',
                       style: Theme.of(context).textTheme.bodyText1,
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
@@ -56,7 +57,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             ),
                           );
                         },
-                        child: Text('SIGNUP'),
+                        child: Text('Регистрация'),
                       ),
                     ),
                     SizedBox(
@@ -73,7 +74,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             ),
                           );
                         },
-                        child: Text('LOGIN'),
+                        child: Text('Вход'),
                       ),
                     ),
                   ],

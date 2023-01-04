@@ -107,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
           color: Color(mainDark),
         ),
         title: Text(
-          'Profile',
+          'Профиль',
           style: Theme.of(context).textTheme.headline3,
         ),
         backgroundColor: Color(lightBlue),
@@ -148,11 +148,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => UpdateProfilePage(),
+                              builder: (context) =>
+                                  UpdateProfilePage(data: data),
                             ),
                           );
                         },
-                        child: Text('Edit profile'),
+                        child: Text('Редактировать'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(darkYellow),
                           side: BorderSide.none,
@@ -164,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Divider(),
                     SizedBox(height: 10),
                     ProfileMenuWidget(
-                      title: 'Information',
+                      title: 'Информация',
                       icon: Icons.info_outline,
                       onPress: () {
                         Navigator.of(context).push(
@@ -177,7 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Divider(),
                     ProfileMenuWidget(
-                      title: 'Settings',
+                      title: 'Настройки',
                       icon: Icons.settings_outlined,
                       onPress: () {
                         Navigator.of(context).push(
@@ -189,7 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Divider(),
                     ProfileMenuWidget(
-                      title: 'Logout',
+                      title: 'Выйти',
                       icon: Icons.logout,
                       onPress: logOut,
                       textColor: Colors.red,
