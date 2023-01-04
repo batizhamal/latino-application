@@ -107,11 +107,6 @@ class _RegisterPageState extends State<RegisterPage> {
         data = json.decode(response.body);
 
         if (data != null) {
-          if (this.mounted) {
-            setState(() {
-              _loading = false;
-            });
-          }
           sharedPreferences.setString("token", data['access_token']);
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => HomePage()),
@@ -129,6 +124,12 @@ class _RegisterPageState extends State<RegisterPage> {
           var role = json.decode(responseProfile.body)!["data"]["role"];
 
           sharedPreferences.setString("role", role);
+
+          if (this.mounted) {
+            setState(() {
+              _loading = false;
+            });
+          }
         } else {
           if (this.mounted) {
             setState(() {
