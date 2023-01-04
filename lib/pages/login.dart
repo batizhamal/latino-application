@@ -1,10 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:latino_app/components/hidden_drawer.dart';
-import 'package:latino_app/components/my_button.dart';
-import 'package:latino_app/components/my_textfield.dart';
 import 'package:http/http.dart' as http;
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
@@ -25,28 +21,23 @@ class _LoginPageState extends State<LoginPage> {
   // text controllers
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _loading = false;
   bool _passwordVisible = false;
-  String? _errorMessage = null;
+  String? _errorMessage;
 
   @override
   void initState() {
     _errorMessage = null;
+    super.initState();
   }
 
   // signIn method
   Future signIn() async {
-    if (this.mounted) {
-      setState(() {
-        _loading = true;
-      });
-    }
 
     // loading circle
     showDialog(
         context: context,
         builder: (context) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(
               color: Colors.white,
             ),
@@ -60,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
       'password': _passwordController.text,
     };
 
-    var data = null;
+    var data;
 
     var response = await http.post(
       Uri.parse("http://latino-parties.com/api/auth/login"),
@@ -76,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
       if (data != null) {
         sharedPreferences.setString("token", data['access_token']);
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+          MaterialPageRoute(builder: (BuildContext context) => const HomePage()),
           (Route<dynamic> route) => false,
         );
 
@@ -92,18 +83,6 @@ class _LoginPageState extends State<LoginPage> {
         var role = json.decode(responseProfile.body)!["data"]["role"];
 
         sharedPreferences.setString("role", role);
-        if (this.mounted) {
-          setState(() {
-            _loading = false;
-          });
-        }
-      } else {
-        if (this.mounted) {
-          setState(() {
-            _loading = false;
-          });
-        }
-        print(data.body);
       }
     } else {
       var errorstring = "";
@@ -112,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
       data["errors"].forEach((key, value) {
         errorstring = errorstring + '\n' + value.join('\n');
       });
-      if (this.mounted) {
+      if (mounted) {
         setState(() {
           _errorMessage = errorstring;
         });
@@ -129,15 +108,14 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Color(lightBlue),
+      backgroundColor: const Color(lightBlue),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(30),
+              padding: const EdgeInsets.all(30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -146,14 +124,14 @@ class _LoginPageState extends State<LoginPage> {
                     twoDancersImage,
                     height: 200,
                   ),
-                  SizedBox(height: 25),
+                  const SizedBox(height: 25),
 
                   // Hello again!
                   Text(
                     'С возвращением!',
                     style: Theme.of(context).textTheme.headline1,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     'Планируйте и регистрируйтесь на мероприятия',
                     style: Theme.of(context).textTheme.bodyText1,
@@ -162,37 +140,37 @@ class _LoginPageState extends State<LoginPage> {
 
                   Form(
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 30),
+                      padding: const EdgeInsets.symmetric(vertical: 30),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TextFormField(
                             controller: _usernameController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.person_outline_outlined),
                               labelText: 'Логин',
                               hintText: 'Логин',
                               border: OutlineInputBorder(),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             controller: _passwordController,
                             obscureText: !_passwordVisible,
                             decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.password_rounded),
+                              prefixIcon: const Icon(Icons.password_rounded),
                               labelText: 'Пароль',
                               hintText: 'Пароль',
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
-                                  if (this.mounted) {
+                                  if (mounted) {
                                     setState(() {
                                       _passwordVisible = !_passwordVisible;
                                     });
                                   }
                                 },
-                                icon: Icon(Icons.remove_red_eye_sharp),
+                                icon: const Icon(Icons.remove_red_eye_sharp),
                               ),
                             ),
                           ),
@@ -212,14 +190,14 @@ class _LoginPageState extends State<LoginPage> {
                           // ),
                           Container(
                             child: _errorMessage == null
-                                ? SizedBox(height: 10)
+                                ? const SizedBox(height: 10)
                                 : Column(
                                     children: [
                                       Text(
                                         _errorMessage.toString(),
-                                        style: TextStyle(color: Color(mainRed)),
+                                        style: const TextStyle(color: Color(mainRed)),
                                       ),
-                                      SizedBox(height: 10),
+                                      const SizedBox(height: 10),
                                     ],
                                   ),
                           ),
@@ -228,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 50,
                             child: ElevatedButton(
                               onPressed: signIn,
-                              child: Text('Войти'),
+                              child: const Text('Войти'),
                             ),
                           ),
                         ],
@@ -240,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Нет аккаунта?',
                         style: TextStyle(
                           fontSize: 14,
@@ -248,7 +226,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       GestureDetector(
                         onTap: widget.showRegisterPage,
-                        child: Text(
+                        child: const Text(
                           ' Зарегистрироваться',
                           style: TextStyle(
                             color: Colors.blue,

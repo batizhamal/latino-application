@@ -5,21 +5,21 @@ import 'package:latino_app/constants/color_codes.dart';
 class MyTextTheme {
   static final lightTextTheme = TextTheme(
     headline1: GoogleFonts.montserrat(
-      color: Color(mainDark),
+      color: const Color(mainDark),
       fontSize: 32,
       fontWeight: FontWeight.bold,
     ),
     headline2: GoogleFonts.montserrat(
-      color: Color(mainDark),
+      color:const Color(mainDark),
       fontSize: 32,
     ),
     headline3: GoogleFonts.montserrat(
-      color: Color(mainDark),
+      color: const Color(mainDark),
       fontWeight: FontWeight.bold,
       fontSize: 18,
     ),
     headline4: GoogleFonts.montserrat(
-      color: Color(mainDark),
+      color: const Color(mainDark),
       fontWeight: FontWeight.bold,
       fontSize: 22,
     ),

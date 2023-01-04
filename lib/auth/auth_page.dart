@@ -1,5 +1,4 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:latino_app/pages/login.dart';
 import 'package:latino_app/pages/register.dart';
 
@@ -18,6 +17,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   void initState() {
     showLoginPage = widget.showLoginPage;
+    super.initState();
   }
 
   void toggleScreens() {

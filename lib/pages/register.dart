@@ -1,10 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:latino_app/components/hidden_drawer.dart';
-import 'package:latino_app/components/my_button.dart';
-import 'package:latino_app/components/my_textfield.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home/home.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -28,16 +24,14 @@ class _RegisterPageState extends State<RegisterPage> {
   final _nameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
 
-  bool _loading = false;
-
   bool _passwordVisible = false;
   bool _confirmPasswordVisible = false;
 
-  String? _errorMessage = null;
+  String? _errorMessage;
 
   var roles = [
-    DropdownMenuItem(child: Text("Танцор"), value: "b"),
-    DropdownMenuItem(child: Text("Организатор"), value: "a"),
+    const DropdownMenuItem(child: Text("Танцор"), value: "b"),
+    const DropdownMenuItem(child: Text("Организатор"), value: "a"),
   ];
 
   var _role;
@@ -46,6 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void initState() {
     _errorMessage = null;
     _role = roles[0].value;
+    super.initState();
   }
 
   @override
@@ -61,17 +56,12 @@ class _RegisterPageState extends State<RegisterPage> {
   // sign up method
   Future signUp() async {
     if (passwordConfirmed()) {
-      if (this.mounted) {
-        setState(() {
-          _loading = true;
-        });
-      }
 
       // loading circle
       showDialog(
           context: context,
           builder: (context) {
-            return Center(
+            return const  Center(
               child: CircularProgressIndicator(
                 color: Colors.white,
               ),
@@ -109,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
         if (data != null) {
           sharedPreferences.setString("token", data['access_token']);
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+            MaterialPageRoute(builder: (BuildContext context) => const HomePage()),
             (Route<dynamic> route) => false,
           );
           var token = data['access_token'];
@@ -125,18 +115,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
           sharedPreferences.setString("role", role);
 
-          if (this.mounted) {
-            setState(() {
-              _loading = false;
-            });
-          }
-        } else {
-          if (this.mounted) {
-            setState(() {
-              _loading = false;
-            });
-          }
-          print(data.body);
         }
       } else {
         var errorstring = "";
@@ -145,7 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
         data["errors"].forEach((key, value) {
           errorstring = errorstring + '\n' + value.join('\n');
         });
-        if (this.mounted) {
+        if (mounted) {
           setState(() {
             _errorMessage = errorstring;
           });
@@ -165,12 +143,12 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFDEE4F6),
+      backgroundColor: const Color(0xFFDEE4F6),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(30),
+              padding: const EdgeInsets.all(30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -178,7 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     'Регистрация',
                     style: Theme.of(context).textTheme.headline1,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     'Введите свои данные ниже для регистрации',
                     style: Theme.of(context).textTheme.bodyText1,
@@ -186,110 +164,110 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   Form(
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 30),
+                      padding:const EdgeInsets.symmetric(vertical: 30),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TextFormField(
                             controller: _nameController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.person_outline_outlined),
                               labelText: 'ФИ',
                               hintText: 'ФИ',
                               border: OutlineInputBorder(),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             controller: _usernameController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.mail),
                               labelText: 'E-mail',
                               hintText: 'E-mail',
                               border: OutlineInputBorder(),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             controller: _phoneNumberController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.phone_outlined),
                               labelText: 'Номер телефона',
                               hintText: 'Номер телефона',
                               border: OutlineInputBorder(),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           DropdownButtonFormField(
                             value: _role,
                             items: roles,
                             onChanged: (value) {
-                              if (this.mounted) {
+                              if (mounted) {
                                 setState(() {
                                   _role = value;
                                 });
                               }
                             },
-                            icon: Icon(LineAwesomeIcons.angle_down),
-                            decoration: InputDecoration(
+                            icon: const Icon(LineAwesomeIcons.angle_down),
+                            decoration: const InputDecoration(
                               labelText: 'Роль',
                               prefixIcon: Icon(Icons.accessibility_outlined),
                               border: OutlineInputBorder(),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             controller: _passwordController,
                             obscureText: !_passwordVisible,
                             decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.fingerprint),
+                              prefixIcon: const Icon(Icons.fingerprint),
                               labelText: 'Пароль',
                               hintText: 'Пароль',
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
-                                  if (this.mounted) {
+                                  if (mounted) {
                                     setState(() {
                                       _passwordVisible = !_passwordVisible;
                                     });
                                   }
                                 },
-                                icon: Icon(Icons.remove_red_eye),
+                                icon: const Icon(Icons.remove_red_eye),
                               ),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             controller: _confirmPasswordController,
                             obscureText: !_confirmPasswordVisible,
                             decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.password),
+                              prefixIcon: const Icon(Icons.password),
                               labelText: 'Подтвердить пароль',
                               hintText: 'Подтвердить пароль',
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
-                                  if (this.mounted) {
+                                  if (mounted) {
                                     setState(() {
                                       _confirmPasswordVisible =
                                           !_confirmPasswordVisible;
                                     });
                                   }
                                 },
-                                icon: Icon(Icons.remove_red_eye),
+                                icon: const Icon(Icons.remove_red_eye),
                               ),
                             ),
                           ),
                           Container(
                             child: _errorMessage == null
-                                ? SizedBox(height: 10)
+                                ? const SizedBox(height: 10)
                                 : Column(
                                     children: [
                                       Text(
                                         _errorMessage.toString(),
-                                        style: TextStyle(color: Color(mainRed)),
+                                        style: const TextStyle(color: Color(mainRed)),
                                       ),
-                                      SizedBox(height: 10),
+                                      const SizedBox(height: 10),
                                     ],
                                   ),
                           ),
@@ -298,7 +276,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             height: 50,
                             child: ElevatedButton(
                               onPressed: signUp,
-                              child: Text('Зарегистрироваться'),
+                              child: const Text('Зарегистрироваться'),
                             ),
                           ),
                         ],
@@ -310,10 +288,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Уже есть аккаунт?'),
+                      const Text('Уже есть аккаунт?'),
                       GestureDetector(
                         onTap: widget.showLoginPage,
-                        child: Text(' Войти',
+                        child: const Text(' Войти',
                             style: TextStyle(
                               color: Colors.blue,
                               fontWeight: FontWeight.bold,

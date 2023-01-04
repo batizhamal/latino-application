@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
     if (sharedPreferences.getString("token") == null) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (BuildContext context) => AuthPage(showLoginPage: true)),
+              builder: (BuildContext context) => const AuthPage(showLoginPage: true)),
           (Route<dynamic> route) => false);
     }
   }
@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
     if (response.statusCode != 200) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-            builder: (BuildContext context) => AuthPage(showLoginPage: true)),
+            builder: (BuildContext context) => const AuthPage(showLoginPage: true)),
         (Route<dynamic> route) => false,
       );
     }
@@ -77,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     var token = sharedPreferences.getString("token");
 
-    var response = await http.post(
+    await http.post(
       Uri.parse("http://latino-parties.com/api/auth/logout"),
       headers: {
         'Authorization': 'Bearer $token',
@@ -86,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-          builder: (BuildContext context) => AuthPage(showLoginPage: true)),
+          builder: (BuildContext context) => const AuthPage(showLoginPage: true)),
       (Route<dynamic> route) => false,
     );
   }
@@ -94,34 +94,34 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(lightBlue),
+      backgroundColor: const Color(lightBlue),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+              MaterialPageRoute(builder: (BuildContext context) => const HomePage()),
               (Route<dynamic> route) => false,
             );
           },
-          icon: Icon(Icons.arrow_back),
-          color: Color(mainDark),
+          icon: const Icon(Icons.arrow_back),
+          color: const Color(mainDark),
         ),
         title: Text(
           'Профиль',
           style: Theme.of(context).textTheme.headline3,
         ),
-        backgroundColor: Color(lightBlue),
+        backgroundColor: const Color(lightBlue),
         elevation: 0,
       ),
       body: _isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 color: Color(mainDark),
               ),
             )
           : SingleChildScrollView(
               child: Container(
-                padding: EdgeInsets.all(30),
+                padding: const EdgeInsets.all(30),
                 child: Column(
                   children: [
                     SizedBox(
@@ -132,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Image.asset(blankProfileImage),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       data["name"] + " " + data["surname"],
                       style: Theme.of(context).textTheme.headline3,
@@ -141,7 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       data["email"],
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: 300,
                       child: ElevatedButton(
@@ -153,17 +153,17 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           );
                         },
-                        child: Text('Редактировать'),
+                        child: const Text('Редактировать'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(darkYellow),
+                          backgroundColor: const Color(darkYellow),
                           side: BorderSide.none,
-                          shape: StadiumBorder(),
+                          shape: const StadiumBorder(),
                         ),
                       ),
                     ),
-                    SizedBox(height: 30),
-                    Divider(),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 30),
+                    const Divider(),
+                    const SizedBox(height: 10),
                     ProfileMenuWidget(
                       title: 'Информация',
                       icon: Icons.info_outline,
@@ -176,19 +176,19 @@ class _ProfilePageState extends State<ProfilePage> {
                         );
                       },
                     ),
-                    Divider(),
+                    const Divider(),
                     ProfileMenuWidget(
                       title: 'Настройки',
                       icon: Icons.settings_outlined,
                       onPress: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (BuildContext context) => SettingsPage(),
+                            builder: (BuildContext context) => const SettingsPage(),
                           ),
                         );
                       },
                     ),
-                    Divider(),
+                    const Divider(),
                     ProfileMenuWidget(
                       title: 'Выйти',
                       icon: Icons.logout,

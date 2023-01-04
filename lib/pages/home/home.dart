@@ -35,16 +35,15 @@ class _HomePageState extends State<HomePage> {
     });
     checkLoginStatus();
     getAllEvents();
+    super.initState();
   }
 
   checkLoginStatus() async {
     final sharedPreferences = await SharedPreferences.getInstance();
 
-    print(sharedPreferences.getString("token"));
-
     if (sharedPreferences.getString("token") == null) {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => WelcomePage()),
+          MaterialPageRoute(builder: (BuildContext context) => const WelcomePage()),
           (Route<dynamic> route) => false);
     }
   }
@@ -102,12 +101,12 @@ class _HomePageState extends State<HomePage> {
 
       var newItem = Container(
         width: double.infinity,
-        margin: EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: Color(darkYellow),
+          color: const Color(darkYellow),
           borderRadius: BorderRadius.circular(10),
         ),
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -117,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                 Flexible(
                   child: Text(
                     event["title"],
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -144,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                                 (Route<dynamic> route) => false,
                               );
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.edit,
                               size: 14,
                             ),
@@ -157,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                               registerForEvent(event["id"]);
                               getAllEvents();
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.add,
                               size: 14,
                             ),
@@ -169,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                                   unRegisterFromEvent(event["id"]);
                                   getAllEvents();
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.done,
                                   size: 14,
                                 ),
@@ -180,12 +179,12 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            Divider(
+            const Divider(
               color: Colors.white,
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   "Организатор: ",
                   style: TextStyle(
                     fontSize: 14,
@@ -194,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Text(
                   event["organizer"],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -204,7 +203,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   "Адрес: ",
                   style: TextStyle(
                     fontSize: 14,
@@ -213,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Text(
                   event["address"],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -223,7 +222,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   "Вход: ",
                   style: TextStyle(
                     fontSize: 14,
@@ -232,7 +231,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Text(
                   event["price"],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -240,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            Text(
+            const Text(
               "Описание: ",
               style: TextStyle(
                 fontSize: 14,
@@ -249,16 +248,16 @@ class _HomePageState extends State<HomePage> {
             ),
             Text(
               event["description"],
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            Divider(color: Color(mainDark)),
+            const Divider(color: Color(mainDark)),
             Text(
               event["status"],
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Color(mainDark),
@@ -282,9 +281,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(lightBlue),
+      backgroundColor: const Color(lightBlue),
       appBar: AppBar(
-        backgroundColor: Color(lightBlue),
+        backgroundColor: const Color(lightBlue),
         elevation: 0,
         title:
             Text('Мероприятия', style: Theme.of(context).textTheme.headline3),
@@ -292,16 +291,16 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ProfilePage()),
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
               );
             },
-            icon: Icon(Icons.person),
-            color: Color(mainDark),
+            icon: const Icon(Icons.person),
+            color: const Color(mainDark),
           ),
         ],
       ),
       body: _loading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 color: Color(mainDark),
               ),
@@ -309,7 +308,7 @@ class _HomePageState extends State<HomePage> {
           : SingleChildScrollView(
               child: SafeArea(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
                       Row(
@@ -322,7 +321,7 @@ class _HomePageState extends State<HomePage> {
                                 DateFormat.yMMMMd('ru').format(DateTime.now()),
                                 style: Theme.of(context).textTheme.headline5,
                               ),
-                              SizedBox(height: 10),
+                              const  SizedBox(height: 10),
                               Text(
                                 'Сегодня',
                                 style: Theme.of(context).textTheme.headline4,
@@ -338,29 +337,28 @@ class _HomePageState extends State<HomePage> {
                                       Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              CreateEventPage(),
+                                              const CreateEventPage(),
                                         ),
                                         (Route<dynamic> route) => false,
                                       );
                                     },
-                                    child: Text('+  Создать'),
+                                    child: const Text('+  Создать'),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(darkYellow),
+                                      backgroundColor: const Color(darkYellow),
                                     ),
                                   ),
                                 )
-                              : SizedBox(width: 100, height: 40),
+                              : const SizedBox(width: 100, height: 40),
                         ],
                       ),
-                      SizedBox(height: 10),
-                      Container(
-                        child: DatePicker(
+                      const SizedBox(height: 10),
+                      DatePicker(
                           DateTime.now(),
                           height: 100,
                           width: 80,
                           locale: 'ru',
                           initialSelectedDate: DateTime.now(),
-                          selectionColor: Color(mainBlue),
+                          selectionColor: const Color(mainBlue),
                           selectedTextColor: Colors.white,
                           onDateChange: (date) {
                             setState(() {
@@ -369,9 +367,8 @@ class _HomePageState extends State<HomePage> {
                             filterEvents();
                           },
                         ),
-                      ),
 
-                      Divider(),
+                      const Divider(),
 
                       // displaying events here
                       Column(
@@ -389,7 +386,7 @@ class _HomePageState extends State<HomePage> {
     final sharedPrederences = await SharedPreferences.getInstance();
     var token = sharedPrederences.getString("token");
 
-    var response = await http.post(
+    await http.post(
       Uri.parse("http://latino-parties.com/api/events/$id/register"),
       headers: {
         'Authorization': 'Bearer $token',
@@ -401,7 +398,7 @@ class _HomePageState extends State<HomePage> {
     final sharedPrederences = await SharedPreferences.getInstance();
     var token = sharedPrederences.getString("token");
 
-    var response = await http.delete(
+    await http.delete(
       Uri.parse("http://latino-parties.com/api/events/$id/cancel-registration"),
       headers: {
         'Authorization': 'Bearer $token',

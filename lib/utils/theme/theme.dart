@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:latino_app/constants/color_swatches.dart';
 import 'package:latino_app/utils/theme/buttons/elevated_button_theme.dart';
 import 'package:latino_app/utils/theme/buttons/outlined_button_theme.dart';

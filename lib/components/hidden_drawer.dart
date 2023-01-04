@@ -13,13 +13,13 @@ class HiddenDrawer extends StatefulWidget {
 class _HiddenDrawerState extends State<HiddenDrawer> {
   List<ScreenHiddenDrawer> _pages = [];
 
-  final mySelectedStyle = TextStyle(
+  final mySelectedStyle = const TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 18,
     color: Colors.white,
   );
 
-  final myBaseStyle = TextStyle(
+  final myBaseStyle = const TextStyle(
     fontWeight: FontWeight.normal,
     fontSize: 16,
     color: Color(0xFF383C46),
@@ -35,18 +35,18 @@ class _HiddenDrawerState extends State<HiddenDrawer> {
           name: 'Homepage',
           baseStyle: myBaseStyle,
           selectedStyle: mySelectedStyle,
-          colorLineSelected: Color(0xFFE0503D),
+          colorLineSelected: const Color(0xFFE0503D),
         ),
-        HomePage(),
+        const HomePage(),
       ),
       ScreenHiddenDrawer(
         ItemHiddenMenu(
           name: 'Profile',
           baseStyle: myBaseStyle,
           selectedStyle: mySelectedStyle,
-          colorLineSelected: Color(0xFFE0503D),
+          colorLineSelected: const Color(0xFFE0503D),
         ),
-        ProfilePage(),
+        const ProfilePage(),
       )
     ];
   }
@@ -55,7 +55,7 @@ class _HiddenDrawerState extends State<HiddenDrawer> {
   Widget build(BuildContext context) {
     return HiddenDrawerMenu(
       screens: _pages,
-      backgroundColorMenu: Color(0xFFB9C7F8),
+      backgroundColorMenu: const Color(0xFFB9C7F8),
       initPositionSelected: 0,
       slidePercent: 40,
     );

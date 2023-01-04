@@ -1,7 +1,5 @@
-import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/locale.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home/home.dart';
 import 'package:http/http.dart' as http;
@@ -28,16 +26,16 @@ class _CreateEventPageState extends State<CreateEventPage> {
   bool _creating = false;
 
   getDateFromUser() async {
-    DateTime? _pickedDate = await showDatePicker(
+    DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2015),
       lastDate: DateTime(2222),
     );
 
-    if (_pickedDate != null) {
+    if (pickedDate != null) {
       setState(() {
-        _dateController = _pickedDate;
+        _dateController = pickedDate;
       });
     }
   }
@@ -72,7 +70,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
         _creating = false;
 
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+          MaterialPageRoute(builder: (BuildContext context) => const HomePage()),
           (Route<dynamic> route) => false,
         );
       });
@@ -82,29 +80,29 @@ class _CreateEventPageState extends State<CreateEventPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(lightBlue),
+      backgroundColor: const Color(lightBlue),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+              MaterialPageRoute(builder: (BuildContext context) => const HomePage()),
               (Route<dynamic> route) => false,
             );
           },
-          icon: Icon(Icons.arrow_back),
-          color: Color(mainDark),
+          icon: const Icon(Icons.arrow_back),
+          color: const Color(mainDark),
         ),
         title: Text(
           'Создать мероприятие',
           style: Theme.of(context).textTheme.headline3,
         ),
-        backgroundColor: Color(lightBlue),
+        backgroundColor: const Color(lightBlue),
         elevation: 0,
       ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
                 Form(
@@ -113,17 +111,17 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     children: [
                       TextFormField(
                         controller: _titleController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.title),
                           labelText: 'Название',
                           hintText: 'Название',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextFormField(
                         controller: _descriptionController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.description),
                           labelText: 'Описание',
                           hintText: 'Описание',
@@ -132,53 +130,53 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       ),
 
                       // DatePicker
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextFormField(
                         decoration: InputDecoration(
                           prefixIcon: IconButton(
                             onPressed: () {
                               getDateFromUser();
                             },
-                            icon: Icon(Icons.date_range_outlined),
+                            icon: const Icon(Icons.date_range_outlined),
                           ),
                           hintText: DateFormat.yMd().format(_dateController),
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                         ),
                       ),
 
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextFormField(
                         controller: _priceController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.money),
                           labelText: 'Вход',
                           hintText: 'Вход',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextFormField(
                         controller: _addressController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.location_on_outlined),
                           labelText: 'Место проведения',
                           hintText: 'Место проведения',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
                           onPressed: createEvent,
                           child: _creating
-                              ? Center(
+                              ? const Center(
                                   child: CircularProgressIndicator(
                                     color: Colors.white,
                                   ),
                                 )
-                              : Text('Создать'),
+                              : const Text('Создать'),
                         ),
                       ),
                     ],

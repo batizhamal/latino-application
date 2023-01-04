@@ -1,6 +1,3 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latino_app/auth/auth_page.dart';
@@ -56,7 +53,7 @@ class _SettingsPageState extends State<SettingsPage> {
       if (response.statusCode != 200) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (BuildContext context) => AuthPage(showLoginPage: true)),
+              builder: (BuildContext context) => const AuthPage(showLoginPage: true)),
           (Route<dynamic> route) => false,
         );
       }
@@ -76,7 +73,7 @@ class _SettingsPageState extends State<SettingsPage> {
       final sharedPreferences = await SharedPreferences.getInstance();
       var token = sharedPreferences.getString("token");
 
-      var response = await http.delete(
+      await http.delete(
         Uri.parse("http://latino-parties.com/api/auth/profile"),
         headers: {
           'Authorization': 'Bearer $token',
@@ -89,7 +86,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-            builder: (BuildContext context) => AuthPage(showLoginPage: true)),
+            builder: (BuildContext context) => const AuthPage(showLoginPage: true)),
         (Route<dynamic> route) => false,
       );
     }
@@ -98,26 +95,26 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(lightBlue),
+      backgroundColor: const Color(lightBlue),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(Icons.arrow_back),
-          color: Color(mainDark),
+          icon: const  Icon(Icons.arrow_back),
+          color: const Color(mainDark),
         ),
         title: Text(
           'Настройки',
           style: Theme.of(context).textTheme.headline3,
         ),
-        backgroundColor: Color(lightBlue),
+        backgroundColor: const Color(lightBlue),
         elevation: 0,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
+            padding: const EdgeInsets.fromLTRB(20, 30, 20, 30),
             child: Column(
               children: [
                 Stack(
@@ -125,10 +122,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     Container(
                       width: double.infinity,
                       height: 300,
-                      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      padding: EdgeInsets.all(10),
+                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Color(mainBlue), width: 1),
+                        border: Border.all(color: const Color(mainBlue), width: 1),
                         borderRadius: BorderRadius.circular(5),
                         shape: BoxShape.rectangle,
                       ),
@@ -139,29 +136,29 @@ class _SettingsPageState extends State<SettingsPage> {
                             controller: _passwordController,
                             obscureText: !_passwordVisible,
                             decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.fingerprint),
+                              prefixIcon: const Icon(Icons.fingerprint),
                               labelText: 'Новый пароль',
                               hintText: 'Новый пароль',
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   setState(() {
                                     _passwordVisible = !_passwordVisible;
                                   });
                                 },
-                                icon: Icon(Icons.remove_red_eye),
+                                icon: const Icon(Icons.remove_red_eye),
                               ),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             controller: _confirmPasswordController,
                             obscureText: !_confirmPasswordVisible,
                             decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.password),
+                              prefixIcon: const Icon(Icons.password),
                               labelText: 'Подтвердить пароль',
                               hintText: 'Подтвердить пароль',
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -169,22 +166,22 @@ class _SettingsPageState extends State<SettingsPage> {
                                         !_confirmPasswordVisible;
                                   });
                                 },
-                                icon: Icon(Icons.remove_red_eye),
+                                icon: const Icon(Icons.remove_red_eye),
                               ),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           SizedBox(
                             width: double.infinity,
                             height: 50,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(darkYellow)),
+                                  backgroundColor: const Color(darkYellow)),
                               onPressed: changePassword,
                               child: _saving
-                                  ? CircularProgressIndicator(
+                                  ? const CircularProgressIndicator(
                                       color: Colors.white)
-                                  : Text('Сохранить'),
+                                  : const Text('Сохранить'),
                             ),
                           ),
                         ],
@@ -195,12 +192,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       top: 2,
                       child: Container(
                         padding:
-                            EdgeInsets.only(bottom: 10, left: 10, right: 10),
-                        color: Color(lightBlue),
+                            const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                        color: const Color(lightBlue),
                         child: Text(
                           'Сменить пароль',
                           style: GoogleFonts.montserrat(
-                            color: Color(mainDark),
+                            color: const Color(mainDark),
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
@@ -210,7 +207,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ],
                 ),
 
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
 
                 // second block
                 Stack(
@@ -218,10 +215,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     Container(
                       width: double.infinity,
                       height: 200,
-                      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      padding: EdgeInsets.fromLTRB(10, 30, 10, 30),
+                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Color(mainRed), width: 1),
+                        border: Border.all(color: const Color(mainRed), width: 1),
                         borderRadius: BorderRadius.circular(5),
                         shape: BoxShape.rectangle,
                       ),
@@ -231,22 +228,22 @@ class _SettingsPageState extends State<SettingsPage> {
                           Text(
                             'После этого, вы не сможете зайти в учетную запись под такими же данными.',
                             style: GoogleFonts.montserrat(
-                              color: Color(mainRed),
+                              color: const Color(mainRed),
                               fontSize: 16,
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           SizedBox(
                             width: double.infinity,
                             height: 50,
                             child: ElevatedButton(
                                 onPressed: deleteProfile,
                                 child: _deleting
-                                    ? CircularProgressIndicator(
+                                    ?  const CircularProgressIndicator(
                                         color: Colors.white)
-                                    : Text('Все равно удалить'),
+                                    :  const Text('Все равно удалить'),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(mainRed),
+                                  backgroundColor: const Color(mainRed),
                                 )),
                           ),
                         ],
@@ -257,12 +254,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       top: 2,
                       child: Container(
                         padding:
-                            EdgeInsets.only(bottom: 10, left: 10, right: 10),
-                        color: Color(lightBlue),
+                            const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                        color: const Color(lightBlue),
                         child: Text(
                           'Удалить учетную запись',
                           style: GoogleFonts.montserrat(
-                            color: Color(darkRed),
+                            color: const Color(darkRed),
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),

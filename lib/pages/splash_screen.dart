@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
-import 'package:latino_app/pages/home/home.dart';
 import 'package:latino_app/pages/welcome_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,17 +16,18 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     startAnimation();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(lightBlue),
+      backgroundColor: const Color(lightBlue),
       body: SafeArea(
         child: Stack(
           children: [
             AnimatedPositioned(
-              duration: Duration(milliseconds: 1600),
+              duration: const  Duration(milliseconds: 1600),
               top: animate ? 120 : 90,
               left: 30,
               child: Column(
@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             AnimatedPositioned(
-              duration: Duration(milliseconds: 1600),
+              duration: const Duration(milliseconds: 1600),
               bottom: animate ? 0 : -50,
               right: 30,
               child: Image.asset(
@@ -61,17 +61,17 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future startAnimation() async {
-    await Future.delayed(Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
       animate = true;
     });
 
     // after 5 seconds go to WelcomPage
-    await Future.delayed(Duration(milliseconds: 5000));
+    await Future.delayed(const Duration(milliseconds: 5000));
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => WelcomePage(),
+        builder: (context) => const WelcomePage(),
       ),
     );
   }

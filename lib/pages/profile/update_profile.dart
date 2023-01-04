@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:latino_app/auth/auth_page.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
-import 'package:latino_app/pages/profile/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class UpdateProfilePage extends StatefulWidget {
-  UpdateProfilePage({super.key, required this.data});
+  const UpdateProfilePage({super.key, required this.data});
   final data;
 
   @override
@@ -22,7 +21,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   var _usernameController = TextEditingController();
   var _phoneNumberController = TextEditingController();
 
-  String? _errorMessage = null;
+  String? _errorMessage;
   bool _loading = false;
 
   @override
@@ -70,7 +69,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     if (response.statusCode != 200) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-            builder: (BuildContext context) => AuthPage(showLoginPage: true)),
+            builder: (BuildContext context) => const AuthPage(showLoginPage: true)),
         (Route<dynamic> route) => false,
       );
     }
@@ -79,7 +78,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
       _loading = false;
     });
 
-    var data = null;
 
     if (response.statusCode != 200) {
       var errorstring = "";
@@ -98,16 +96,16 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(lightBlue),
+      backgroundColor: const Color(lightBlue),
       appBar: AppBar(
-        backgroundColor: Color(lightBlue),
+        backgroundColor: const Color(lightBlue),
         elevation: 0,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(Icons.arrow_back),
-          color: Color(mainDark),
+          icon: const Icon(Icons.arrow_back),
+          color:const  Color(mainDark),
         ),
         title: Text(
           'Редактировать профиль',
@@ -116,7 +114,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(30),
+          padding: const EdgeInsets.all(30),
           child: Column(
             children: [
               SizedBox(
@@ -127,63 +125,63 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                   child: Image.asset(blankProfileImage),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Form(
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 30),
+                  padding: const EdgeInsets.symmetric(vertical: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextFormField(
                         controller: _nameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.person_outline_outlined),
                           labelText: 'Имя',
                           hintText: 'Имя',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextFormField(
                         controller: _surnameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.person_outline_outlined),
                           labelText: 'Фамилия',
                           hintText: 'Фамилия',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextFormField(
                         controller: _usernameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.mail),
                           labelText: 'E-mail',
                           hintText: 'E-mail',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextFormField(
                         controller: _phoneNumberController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.phone_outlined),
                           labelText: 'Номер телефона',
                           hintText: 'Номер телефона',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Container(
                         child: _errorMessage == null
-                            ? SizedBox(height: 10)
+                            ? const SizedBox(height: 10)
                             : Column(
                                 children: [
                                   Text(
                                     _errorMessage.toString(),
-                                    style: TextStyle(color: Color(mainRed)),
+                                    style: const TextStyle(color: Color(mainRed)),
                                   ),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                 ],
                               ),
                       ),
@@ -193,8 +191,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                         child: ElevatedButton(
                           onPressed: updateProfile,
                           child: _loading
-                              ? CircularProgressIndicator(color: Colors.white)
-                              : Text('Сохранить'),
+                              ? const CircularProgressIndicator(color: Colors.white)
+                              : const Text('Сохранить'),
                         ),
                       ),
                     ],
