@@ -87,6 +87,8 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
 
+    sharedPreferences.clear();
+
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
           builder: (BuildContext context) =>

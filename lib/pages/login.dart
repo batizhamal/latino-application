@@ -67,8 +67,6 @@ class _LoginPageState extends State<LoginPage> {
       body['email'] = _usernameController.text;
     }
 
-    print(body);
-
     var data;
 
     var response = await http.post(
