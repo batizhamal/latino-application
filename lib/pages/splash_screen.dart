@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
+import 'package:latino_app/pages/home/home.dart';
 import 'package:latino_app/pages/welcome_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -78,10 +80,25 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // after 5 seconds go to WelcomPage
     await Future.delayed(const Duration(milliseconds: 5000));
+
+    bool isLoggedIn = false;
+
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+
+    if (sharedPreferences != null) {
+      var expiryDate = sharedPreferences.getString('expiryDate');
+      if (expiryDate != null) {
+        isLoggedIn = DateTime.parse(expiryDate).isAfter(DateTime.now());
+      }
+    }
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const WelcomePage(),
+        builder: (context) {
+          return isLoggedIn ? const HomePage() : const WelcomePage();
+        },
       ),
     );
   }
