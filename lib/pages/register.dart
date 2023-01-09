@@ -1,12 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:latino_app/components/my_button.dart';
-import 'package:latino_app/components/my_textfield.dart';
-import 'package:latino_app/pages/home.dart';
+import 'package:latino_app/constants/color_codes.dart';
+import 'package:latino_app/pages/home/home.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,10 +23,26 @@ class _RegisterPageState extends State<RegisterPage> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _nameController = TextEditingController();
-  final _surnameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
 
-  bool _loading = false;
+  bool _passwordVisible = false;
+  bool _confirmPasswordVisible = false;
+
+  String? _errorMessage;
+
+  var roles = [
+    const DropdownMenuItem(child: Text("Танцор"), value: "b"),
+    const DropdownMenuItem(child: Text("Организатор"), value: "a"),
+  ];
+
+  var _role;
+
+  @override
+  void initState() {
+    _errorMessage = null;
+    _role = roles[0].value;
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -36,7 +50,6 @@ class _RegisterPageState extends State<RegisterPage> {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     _nameController.dispose();
-    _surnameController.dispose();
     _phoneNumberController.dispose();
     super.dispose();
   }
@@ -44,20 +57,30 @@ class _RegisterPageState extends State<RegisterPage> {
   // sign up method
   Future signUp() async {
     if (passwordConfirmed()) {
-      // TODO: create sign up method with API
-      setState(() {
-        _loading = true;
-      });
+      // loading circle
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            );
+          });
+
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
+
+      var name = _nameController.text.split(' ')[0];
+      var surname = _nameController.text.split(' ').sublist(1).join(' ');
 
       Map body = {
         'email': _usernameController.text,
         'password': _passwordController.text,
-        'name': _nameController.text,
-        'surname': _surnameController.text,
+        'name': name,
+        'surname': surname.isNotEmpty ? surname : " ",
         'phone_number': _phoneNumberController.text,
-        'type': 'a',
+        'type': _role,
       };
 
       var data = null;
@@ -67,23 +90,43 @@ class _RegisterPageState extends State<RegisterPage> {
         body: body,
       );
 
+      // pop the loading circle
+      Navigator.of(context).pop();
+
       if (response.statusCode == 200) {
         data = json.decode(response.body);
 
         if (data != null) {
-          setState(() {
-            _loading = false;
-          });
           sharedPreferences.setString("token", data['access_token']);
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+            MaterialPageRoute(
+                builder: (BuildContext context) => const HomePage()),
             (Route<dynamic> route) => false,
           );
-        } else {
+          var token = data['access_token'];
+
+          var responseProfile = await http.get(
+              Uri.parse("http://latino-parties.com/api/auth/profile"),
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer $token',
+              });
+          var role = json.decode(responseProfile.body)!["data"]["role"];
+
+          sharedPreferences.setString("role", role);
+        }
+      } else {
+        var errorstring = "";
+        var data = json.decode(response.body);
+
+        data["errors"].forEach((key, value) {
+          errorstring = errorstring + '\n' + value.join('\n');
+        });
+        if (mounted) {
           setState(() {
-            _loading = false;
+            _errorMessage = errorstring;
           });
-          print(data.body);
         }
       }
     }
@@ -99,99 +142,176 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final textScale = MediaQuery.of(context).textScaleFactor;
+
     return Scaffold(
-      backgroundColor: Color(0xFFDEE4F6),
+      backgroundColor: const Color(0xFFDEE4F6),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Register',
-                  style: GoogleFonts.bebasNeue(
-                    fontSize: 48,
+            child: Container(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Регистрация',
+                    style: GoogleFonts.montserrat(
+                      color: const Color(mainDark),
+                      fontSize: 24.0 * textScale * 0.99,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Enter your details below to register',
-                  style: TextStyle(
-                    fontSize: 20,
+                  const SizedBox(height: 10),
+                  Text(
+                    'Введите свои данные ниже для регистрации',
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
-                ),
-                SizedBox(height: 50),
 
-                MyTextField(
-                  controller: _nameController,
-                  hintText: 'First name',
-                  obscureText: false,
-                ),
-                SizedBox(height: 10),
+                  Form(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextFormField(
+                            controller: _nameController,
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(Icons.person_outline_outlined),
+                              labelText: 'ФИ',
+                              hintText: 'ФИ',
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _usernameController,
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(Icons.mail),
+                              labelText: 'E-mail',
+                              hintText: 'E-mail',
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _phoneNumberController,
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(Icons.phone_outlined),
+                              labelText: 'Номер телефона',
+                              hintText: 'Номер телефона',
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          DropdownButtonFormField(
+                            value: _role,
+                            items: roles,
+                            onChanged: (value) {
+                              if (mounted) {
+                                setState(() {
+                                  _role = value;
+                                });
+                              }
+                            },
+                            icon: const Icon(LineAwesomeIcons.angle_down),
+                            decoration: const InputDecoration(
+                              labelText: 'Роль',
+                              prefixIcon: Icon(Icons.accessibility_outlined),
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _passwordController,
+                            obscureText: !_passwordVisible,
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(Icons.fingerprint),
+                              labelText: 'Пароль',
+                              hintText: 'Пароль',
+                              border: const OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  if (mounted) {
+                                    setState(() {
+                                      _passwordVisible = !_passwordVisible;
+                                    });
+                                  }
+                                },
+                                icon: const Icon(Icons.remove_red_eye),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _confirmPasswordController,
+                            obscureText: !_confirmPasswordVisible,
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(Icons.password),
+                              labelText: 'Подтвердить пароль',
+                              hintText: 'Подтвердить пароль',
+                              border: const OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  if (mounted) {
+                                    setState(() {
+                                      _confirmPasswordVisible =
+                                          !_confirmPasswordVisible;
+                                    });
+                                  }
+                                },
+                                icon: const Icon(Icons.remove_red_eye),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: _errorMessage == null
+                                ? const SizedBox(height: 10)
+                                : Column(
+                                    children: [
+                                      Text(
+                                        _errorMessage.toString(),
+                                        style: const TextStyle(
+                                            color: Color(mainRed)),
+                                      ),
+                                      const SizedBox(height: 10),
+                                    ],
+                                  ),
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: signUp,
+                              child: const Text('Зарегистрироваться'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(mainRed),
+                                elevation: 0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
 
-                MyTextField(
-                  controller: _surnameController,
-                  hintText: 'Last name',
-                  obscureText: false,
-                ),
-                SizedBox(height: 10),
-
-                // username textfield
-                MyTextField(
-                  controller: _usernameController,
-                  hintText: 'Username',
-                  obscureText: false,
-                ),
-                SizedBox(height: 10),
-
-                MyTextField(
-                  controller: _phoneNumberController,
-                  hintText: 'Phone number',
-                  obscureText: false,
-                ),
-                SizedBox(height: 10),
-
-                // password textfield
-                MyTextField(
-                  controller: _passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
-                ),
-                SizedBox(height: 10),
-
-                // confirm password textfield
-                MyTextField(
-                  controller: _confirmPasswordController,
-                  hintText: 'Confirm password',
-                  obscureText: true,
-                ),
-                SizedBox(height: 10),
-
-                // sign in button
-                MyButton(
-                  onTap: signUp,
-                  label: 'Sign up',
-                  color: Color(0xFFE0503D),
-                  textColor: Colors.white,
-                ),
-                SizedBox(height: 25),
-
-                // not a member? register now
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Already a member?'),
-                    GestureDetector(
-                      onTap: widget.showLoginPage,
-                      child: Text(' Sign in',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    )
-                  ],
-                )
-              ],
+                  // not a member? register now
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Уже есть аккаунт?'),
+                      GestureDetector(
+                        onTap: widget.showLoginPage,
+                        child: const Text(' Войти',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                            )),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

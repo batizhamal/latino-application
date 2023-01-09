@@ -38,6 +38,14 @@ dependencies:
   google_fonts:
   http: ^0.13.5
   shared_preferences: ^2.0.15
+  hidden_drawer_menu: ^3.0.1
+  flutter_native_splash: ^2.2.16
+  line_awesome_flutter: ^2.0.0
+  google_nav_bar: ^5.0.6
+  intl: ^0.17.0
+  date_picker_timeline: ^1.2.3
+  get: ^4.6.5
+  flutter_launcher_icons: ^0.11.0
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +69,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/two_dancers_cartoon.png
-    - assets/images/1.png
+    - assets/images/planning.png
+    - assets/images/blank_profile.jpeg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -93,3 +102,15 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_native_splash:
+  color: "#DEE4F6"
+  color_dark: "#DEE4F6"
+  image: assets/images/logo.png
+  image_dark: assets/images/logo.png
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21

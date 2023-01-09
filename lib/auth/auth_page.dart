@@ -1,10 +1,10 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:latino_app/pages/login.dart';
 import 'package:latino_app/pages/register.dart';
 
 class AuthPage extends StatefulWidget {
-  const AuthPage({super.key});
+  final bool showLoginPage;
+  const AuthPage({super.key, required this.showLoginPage});
 
   @override
   State<AuthPage> createState() => _AuthPageState();
@@ -13,6 +13,12 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   // initially, show the login page
   bool showLoginPage = true;
+
+  @override
+  void initState() {
+    showLoginPage = widget.showLoginPage;
+    super.initState();
+  }
 
   void toggleScreens() {
     setState(() {
