@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
 import 'package:latino_app/pages/home/home.dart';
@@ -72,29 +73,17 @@ class _LoginPageState extends State<LoginPage> {
           (Route<dynamic> route) => false,
         );
 
-        var token = data['access_token'];
-
-        var responseProfile = await http.get(
-            Uri.parse("http://latino-parties.com/api/auth/profile"),
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'Authorization': 'Bearer $token',
-            });
-        var role = json.decode(responseProfile.body)!["data"]["role"];
-
+        Map<String, dynamic> payload = Jwt.parseJwt(data['access_token']);
+        var role = payload["role_id"] == '3' ? 'Танцор' : 'Организатор';
         sharedPreferences.setString("role", role);
+
+        DateTime? expiryDate = Jwt.getExpiryDate(data['access_token']);
+        sharedPreferences.setString('expiryDate', expiryDate.toString());
       }
     } else {
-      var errorstring = "";
-      var data = json.decode(response.body);
-
-      data["errors"].forEach((key, value) {
-        errorstring = errorstring + '\n' + value.join('\n');
-      });
       if (mounted) {
         setState(() {
-          _errorMessage = errorstring;
+          _errorMessage = 'Вы ввели неправильный логин или пароль';
         });
       }
     }
@@ -199,6 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ? const SizedBox(height: 10)
                                 : Column(
                                     children: [
+                                      SizedBox(height: 10),
                                       Text(
                                         _errorMessage.toString(),
                                         style: const TextStyle(
