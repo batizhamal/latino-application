@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home/home.dart';
+import 'package:latino_app/pages/profile/data_formatter.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -38,15 +38,6 @@ class _RegisterPageState extends State<RegisterPage> {
     const DropdownMenuItem(child: Text("Танцор"), value: "b"),
     const DropdownMenuItem(child: Text("Организатор"), value: "a"),
   ];
-
-  MaskTextInputFormatter phoneNumberFormatter = new MaskTextInputFormatter(
-    mask: '+7 (###) ### ####',
-    filter: {
-      "#": RegExp(r'[0-9]'),
-      '7': RegExp('7'),
-    },
-    type: MaskAutoCompletionType.lazy,
-  );
 
   @override
   void initState() {
@@ -232,7 +223,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.phone_outlined),
                               labelText: 'Номер телефона',
-                              hintText: '+7 (777) 777 7777',
+                              hintText: '+7 ### ### ## ##',
                               border: OutlineInputBorder(),
                             ),
                             inputFormatters: [phoneNumberFormatter],

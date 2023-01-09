@@ -1,12 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
 import 'package:latino_app/pages/home/home.dart';
+import 'package:latino_app/pages/profile/data_formatter.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -32,6 +35,12 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
   }
 
+  bool isPhoneNumber() {
+    RegExp regExp = RegExp(r'(^(?:[+]7)?[0-9])');
+
+    return regExp.hasMatch(_usernameController.text);
+  }
+
   // signIn method
   Future signIn() async {
     // loading circle
@@ -48,9 +57,17 @@ class _LoginPageState extends State<LoginPage> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     Map body = {
-      'email': _usernameController.text,
       'password': _passwordController.text,
     };
+
+    if (isPhoneNumber()) {
+      body['phone_number'] =
+          _usernameController.text.replaceAll(RegExp(r'[^\d]'), "");
+    } else {
+      body['email'] = _usernameController.text;
+    }
+
+    print(body);
 
     var data;
 
@@ -144,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.person_outline_outlined),
                               labelText: 'Логин',
-                              hintText: 'Логин',
+                              hintText: 'Номер телефона или E-mail',
                               border: OutlineInputBorder(),
                             ),
                           ),
