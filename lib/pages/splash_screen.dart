@@ -88,10 +88,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (sharedPreferences != null) {
       var expiryDate = sharedPreferences.getString('expiryDate');
-      print(expiryDate);
       if (expiryDate != null) {
         isLoggedIn = DateTime.parse(expiryDate).isAfter(DateTime.now());
-        print(isLoggedIn);
       }
     }
 

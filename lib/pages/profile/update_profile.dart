@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:latino_app/auth/auth_page.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
+import 'package:latino_app/pages/profile/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -57,6 +58,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
       'surname': _surnameController.text,
       'phone_number': _phoneNumberController.text,
       'type': 'b',
+      'img': widget.data["img"],
     };
 
     var response = await http.put(
@@ -91,7 +93,10 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         _errorMessage = errorstring;
       });
     }
-    Navigator.of(context).pop();
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => const ProfilePage()),
+      (Route<dynamic> route) => false,
+    );
   }
 
   @override
