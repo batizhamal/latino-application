@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home/home.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,19 +30,28 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool _passwordVisible = false;
   bool _confirmPasswordVisible = false;
-
   String? _errorMessage;
+  String? _emailErrorMessage;
+  var _role;
 
   var roles = [
     const DropdownMenuItem(child: Text("Танцор"), value: "b"),
     const DropdownMenuItem(child: Text("Организатор"), value: "a"),
   ];
 
-  var _role;
+  MaskTextInputFormatter phoneNumberFormatter = new MaskTextInputFormatter(
+    mask: '+7 (###) ### ####',
+    filter: {
+      "#": RegExp(r'[0-9]'),
+      '7': RegExp('7'),
+    },
+    type: MaskAutoCompletionType.lazy,
+  );
 
   @override
   void initState() {
     _errorMessage = null;
+    _emailErrorMessage = null;
     _role = roles[0].value;
     super.initState();
   }
@@ -57,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   // sign up method
   Future signUp() async {
-    if (passwordConfirmed()) {
+    if (passwordConfirmed() && _emailErrorMessage == null) {
       // loading circle
       showDialog(
           context: context,
@@ -80,7 +91,8 @@ class _RegisterPageState extends State<RegisterPage> {
         'password': _passwordController.text,
         'name': name,
         'surname': surname.isNotEmpty ? surname : " ",
-        'phone_number': _phoneNumberController.text,
+        'phone_number':
+            _phoneNumberController.text.replaceAll(RegExp(r'[^\d]'), ""),
         'type': _role,
       };
 
@@ -188,16 +200,42 @@ class _RegisterPageState extends State<RegisterPage> {
                               hintText: 'E-mail',
                               border: OutlineInputBorder(),
                             ),
+                            onChanged: (value) {
+                              if (EmailValidator.validate(value.toString()) ||
+                                  value.isEmpty) {
+                                setState(() {
+                                  _emailErrorMessage = null;
+                                });
+                              } else {
+                                setState(() {
+                                  _emailErrorMessage =
+                                      'Введите валидный e-mail';
+                                });
+                              }
+                            },
                           ),
                           const SizedBox(height: 10),
+                          _emailErrorMessage != null
+                              ? Column(
+                                  children: [
+                                    Text(
+                                      _emailErrorMessage.toString(),
+                                      style: const TextStyle(
+                                          color: Color(mainRed)),
+                                    ),
+                                    const SizedBox(height: 10),
+                                  ],
+                                )
+                              : Column(),
                           TextFormField(
                             controller: _phoneNumberController,
                             decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.phone_outlined),
                               labelText: 'Номер телефона',
-                              hintText: 'Номер телефона',
+                              hintText: '+7 (777) 777 7777',
                               border: OutlineInputBorder(),
                             ),
+                            inputFormatters: [phoneNumberFormatter],
                           ),
                           const SizedBox(height: 10),
                           DropdownButtonFormField(
@@ -271,21 +309,19 @@ class _RegisterPageState extends State<RegisterPage> {
                               }
                             },
                           ),
-                          Container(
-                            child: _errorMessage == null
-                                ? const SizedBox(height: 10)
-                                : Column(
-                                    children: [
-                                      SizedBox(height: 10),
-                                      Text(
-                                        _errorMessage.toString(),
-                                        style: const TextStyle(
-                                            color: Color(mainRed)),
-                                      ),
-                                      const SizedBox(height: 10),
-                                    ],
-                                  ),
-                          ),
+                          const SizedBox(height: 10),
+                          _errorMessage != null
+                              ? Column(
+                                  children: [
+                                    Text(
+                                      _errorMessage.toString(),
+                                      style: const TextStyle(
+                                          color: Color(mainRed)),
+                                    ),
+                                    const SizedBox(height: 10),
+                                  ],
+                                )
+                              : Column(),
                           SizedBox(
                             width: double.infinity,
                             height: 50,
