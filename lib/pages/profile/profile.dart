@@ -142,7 +142,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 120,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: Image.asset(blankProfileImage),
+                        child: Image.network(data["img"]) ??
+                            Image.asset(blankProfileImage),
                       ),
                     ),
                     const SizedBox(height: 10),

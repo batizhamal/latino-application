@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:date_picker_timeline/date_picker_widget.dart';
+// import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:latino_app/components/date_picker_timeline/date_picker_timeline.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home/create_event.dart';
 import 'package:latino_app/pages/home/edit_event.dart';
@@ -321,6 +322,7 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
+                      SizedBox(height: 30),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -328,15 +330,7 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                DateFormat.yMMMMd('ru').format(DateTime.now()),
-                                style: GoogleFonts.montserrat(
-                                  color: Colors.grey[500],
-                                  fontSize: 18 * textScale * 0.99,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                'Сегодня',
+                                "${DateFormat.yMMM('ru').format(_selectedDate)[0].toUpperCase()}${DateFormat.yMMM('ru').format(_selectedDate).substring(1).toLowerCase()}",
                                 style: GoogleFonts.montserrat(
                                   color: const Color(mainDark),
                                   fontWeight: FontWeight.bold,
@@ -368,11 +362,11 @@ class _HomePageState extends State<HomePage> {
                               : const SizedBox(width: 100, height: 40),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 40),
                       DatePicker(
                         DateTime.now(),
                         height: 100,
-                        width: 80,
+                        width: 70,
                         locale: 'ru',
                         initialSelectedDate: DateTime.now(),
                         selectionColor: const Color(mainBlue),
