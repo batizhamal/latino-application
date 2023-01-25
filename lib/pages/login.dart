@@ -137,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                     'С возвращением!',
                     style: GoogleFonts.montserrat(
                       color: const Color(mainDark),
-                      fontSize: 24.0 * textScale * 0.99,
+                      fontSize: 24.0 * textScale,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

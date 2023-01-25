@@ -8,6 +8,7 @@ import 'package:latino_app/components/date_picker_timeline/date_picker_timeline.
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home/create_event.dart';
 import 'package:latino_app/pages/home/edit_event.dart';
+import 'package:latino_app/pages/home/event_card.dart';
 import 'package:latino_app/pages/profile/profile.dart';
 import 'package:latino_app/pages/welcome_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -97,185 +98,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  List<Container> getEventWidgets() {
-    List<Container> res = [];
-    for (int i = 0; i < _dateEvents.length; i++) {
-      var event = _dateEvents[i];
-
-      var newItem = Container(
-        width: double.infinity,
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: const Color(darkYellow),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Text(
-                    event["title"],
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    _canCreate
-                        ? IconButton(
-                            onPressed: () {
-                              Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      EditEventPage(
-                                    id: event["id"],
-                                    title: event["title"],
-                                    description: event["description"],
-                                    date: event["date"],
-                                    price: event["price"],
-                                    address: event["address"],
-                                  ),
-                                ),
-                                (Route<dynamic> route) => false,
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.edit,
-                              size: 14,
-                            ),
-                            color: Colors.white,
-                          )
-                        : Container(),
-                    event["status"] == 'Не зарегистрирован'
-                        ? IconButton(
-                            onPressed: () {
-                              registerForEvent(event["id"]);
-                              getAllEvents();
-                            },
-                            icon: const Icon(
-                              Icons.add,
-                              size: 14,
-                            ),
-                            color: Colors.white,
-                          )
-                        : event["status"] == 'Зарегистрирован'
-                            ? IconButton(
-                                onPressed: () {
-                                  unRegisterFromEvent(event["id"]);
-                                  getAllEvents();
-                                },
-                                icon: const Icon(
-                                  Icons.done,
-                                  size: 14,
-                                ),
-                                color: Colors.white,
-                              )
-                            : Container(),
-                  ],
-                ),
-              ],
-            ),
-            const Divider(
-              color: Colors.white,
-            ),
-            Row(
-              children: [
-                const Text(
-                  "Организатор: ",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color(lightYellow),
-                  ),
-                ),
-                Text(
-                  event["organizer"],
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                const Text(
-                  "Адрес: ",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color(lightYellow),
-                  ),
-                ),
-                Text(
-                  event["address"],
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                const Text(
-                  "Вход: ",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color(lightYellow),
-                  ),
-                ),
-                Text(
-                  event["price"],
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            const Text(
-              "Описание: ",
-              style: TextStyle(
-                fontSize: 14,
-                color: Color(lightYellow),
-              ),
-            ),
-            Text(
-              event["description"],
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const Divider(color: Color(mainDark)),
-            Text(
-              event["status"],
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Color(mainDark),
-              ),
-            ),
-          ],
-        ),
-      );
-
-      res.add(newItem);
-    }
-
-    return res;
-  }
-
   @override
   void dispose() {
     super.dispose();
@@ -288,105 +110,135 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: const Color(lightBlue),
       appBar: AppBar(
-        backgroundColor: const Color(lightBlue),
+        backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
-          'Мероприятия',
-          style: GoogleFonts.montserrat(
-            color: const Color(mainDark),
-            fontWeight: FontWeight.bold,
-            fontSize: 18 * textScale * 0.99,
-          ),
-        ),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const ProfilePage()),
-              );
-            },
-            icon: const Icon(Icons.person),
-            color: const Color(mainDark),
+          Padding(
+            padding: const EdgeInsets.only(right: 14),
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const ProfilePage()),
+                );
+              },
+              icon: const Icon(Icons.person),
+              color: const Color(mainDark),
+            ),
           ),
         ],
       ),
       body: _loading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Color(mainDark),
+          ? Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: Color(mainDark),
+                ),
               ),
             )
           : SingleChildScrollView(
               child: SafeArea(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20.0),
+                            bottomRight: Radius.circular(20.0),
+                          )),
+                      child: Column(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          const SizedBox(height: 30),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${DateFormat.yMMM('ru').format(_selectedDate)[0].toUpperCase()}${DateFormat.yMMM('ru').format(_selectedDate).substring(1).toLowerCase()}",
+                                    style: GoogleFonts.montserrat(
+                                      color: const Color(mainDark),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24 * textScale,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              _canCreate
+                                  ? SizedBox(
+                                      width: 120,
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                            MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  const CreateEventPage(),
+                                            ),
+                                            (Route<dynamic> route) => false,
+                                          );
+                                        },
+                                        child: const Text('Создать'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(darkYellow),
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox(width: 100, height: 50),
+                            ],
+                          ),
+                          const SizedBox(height: 40),
+                          DatePicker(
+                            DateTime.now(),
+                            height: 100,
+                            width: 70,
+                            locale: 'ru',
+                            initialSelectedDate: DateTime.now(),
+                            selectionColor: const Color(mainBlue),
+                            selectedTextColor: Colors.white,
+                            onDateChange: (date) {
+                              setState(() {
+                                _selectedDate = date;
+                              });
+                              filterEvents();
+                            },
+                          ),
+                          SizedBox(height: 30),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Column(
+                        children: [
+                          // displaying events here
+                          SizedBox(height: 30),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                "${DateFormat.yMMM('ru').format(_selectedDate)[0].toUpperCase()}${DateFormat.yMMM('ru').format(_selectedDate).substring(1).toLowerCase()}",
+                                'События',
                                 style: GoogleFonts.montserrat(
                                   color: const Color(mainDark),
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 22 * textScale * 0.99,
+                                  fontSize: 22,
                                 ),
                               ),
                             ],
                           ),
-                          _canCreate
-                              ? SizedBox(
-                                  width: 120,
-                                  height: 40,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              const CreateEventPage(),
-                                        ),
-                                        (Route<dynamic> route) => false,
-                                      );
-                                    },
-                                    child: const Text('+  Создать'),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(darkYellow),
-                                    ),
-                                  ),
-                                )
-                              : const SizedBox(width: 100, height: 40),
+                          SizedBox(height: 20),
+                          ...getEventWidgets(_dateEvents),
                         ],
                       ),
-                      const SizedBox(height: 40),
-                      DatePicker(
-                        DateTime.now(),
-                        height: 100,
-                        width: 70,
-                        locale: 'ru',
-                        initialSelectedDate: DateTime.now(),
-                        selectionColor: const Color(mainBlue),
-                        selectedTextColor: Colors.white,
-                        onDateChange: (date) {
-                          setState(() {
-                            _selectedDate = date;
-                          });
-                          filterEvents();
-                        },
-                      ),
-
-                      const Divider(),
-
-                      // displaying events here
-                      Column(
-                        children: getEventWidgets(),
-                      )
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

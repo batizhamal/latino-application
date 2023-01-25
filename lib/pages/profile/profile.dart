@@ -120,7 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
           style: GoogleFonts.montserrat(
             color: const Color(mainDark),
             fontWeight: FontWeight.bold,
-            fontSize: 18 * textScale * 0.99,
+            fontSize: 18 * textScale,
           ),
         ),
         backgroundColor: const Color(lightBlue),
@@ -142,8 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 120,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: Image.network(data["img"]) ??
-                            Image.asset(blankProfileImage),
+                        child: Image.network(data["img"]),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -152,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: GoogleFonts.montserrat(
                         color: const Color(mainDark),
                         fontWeight: FontWeight.bold,
-                        fontSize: 18 * textScale * 0.99,
+                        fontSize: 18 * textScale,
                       ),
                     ),
                     Text(

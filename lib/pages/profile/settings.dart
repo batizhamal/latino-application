@@ -113,7 +113,7 @@ class _SettingsPageState extends State<SettingsPage> {
           style: GoogleFonts.montserrat(
             color: const Color(mainDark),
             fontWeight: FontWeight.bold,
-            fontSize: 18 * textScale * 0.99,
+            fontSize: 18 * textScale,
           ),
         ),
         backgroundColor: const Color(lightBlue),
