@@ -234,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                           SizedBox(height: 20),
-                          ...getEventWidgets(_dateEvents),
+                          ...getEventWidgets(_dateEvents, context, _canCreate),
                         ],
                       ),
                     ),

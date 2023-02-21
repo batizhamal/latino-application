@@ -1,55 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latino_app/constants/color_codes.dart';
+import 'package:latino_app/pages/home/event_page.dart';
 
-List<Container> getEventWidgets(dateEvents) {
+List<Container> getEventWidgets(dateEvents, context, canCreate) {
   List<Container> res = [];
   for (int i = 0; i < dateEvents.length; i++) {
     var event = dateEvents[i];
 
     var newItem = Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Color(darkYellow),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            width: 40,
-            height: 40,
-            child: Center(
-              child: Icon(Icons.list_alt_outlined, color: Colors.white),
-            ),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    EventPage(event: event, canCreate: canCreate)),
+            (Route<dynamic> route) => false,
+          );
+        },
+        child: Container(
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
           ),
-          SizedBox(width: 20),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.all(20),
+          child: Row(
             children: [
-              Text(
-                event["title"],
-                style: GoogleFonts.montserrat(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
+              Container(
+                decoration: BoxDecoration(
+                  color: Color(darkYellow),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                overflow: TextOverflow.ellipsis,
+                width: 40,
+                height: 40,
+                child: Center(
+                  child: Icon(Icons.list_alt_outlined, color: Colors.white),
+                ),
               ),
-              Text(
-                event["start_time"] + ' - ' + event["end_time"],
-                style: GoogleFonts.montserrat(
-                  fontSize: 12,
-                ),
+              SizedBox(width: 20),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    event["title"],
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    event["start_time"] + ' - ' + event["end_time"],
+                    style: GoogleFonts.montserrat(
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
 
