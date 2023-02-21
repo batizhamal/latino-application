@@ -1,12 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:cross_file_image/cross_file_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:latino_app/constants/color_codes.dart';
-import 'package:latino_app/constants/image_strings.dart';
 import 'package:latino_app/pages/home/home.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,11 +33,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   final _addressController = TextEditingController();
 
-  Image? _imageController = Image.asset(defaultEvent);
-
   bool _creating = false;
-
-  final ImagePicker imagePicker = ImagePicker();
 
   getDateFromUser() async {
     DateTime? pickedDate = await showDatePicker(
@@ -80,11 +76,22 @@ class _CreateEventPageState extends State<CreateEventPage> {
     }
   }
 
-  getImageFromUser(ImageSource source) async {
-    var img = await imagePicker.pickImage(source: source);
+  String? _image;
+  final ImagePicker _imagePicker = ImagePicker();
 
+  getImageFromUser() async {
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      return;
+    }
+
+    Uint8List imageByte = await image!.readAsBytes();
+    String _base64 = base64.encode(imageByte);
+
+    print(_base64);
     setState(() {
-      _imageController = Image(image: XFileImage(img!));
+      _image = _base64;
     });
   }
 
@@ -101,7 +108,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
       "address": _addressController.text,
       "start_time": _startTimeController.to24hours(),
       "end_time": _endTimeController.to24hours(),
-      "img": _imageController.toString(),
+      "img": _image,
     };
 
     print(body);
@@ -279,30 +286,20 @@ class _CreateEventPageState extends State<CreateEventPage> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: OutlinedButton(
-                              onPressed: () {
-                                getImageFromUser(ImageSource.gallery);
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.image_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                  Text('   Добавить афишу'),
-                                ],
+                          TextFormField(
+                            decoration: InputDecoration(
+                              prefixIcon: IconButton(
+                                onPressed: () {
+                                  getImageFromUser();
+                                },
+                                icon: Icon(Icons.image_outlined),
                               ),
-                              style: OutlinedButton.styleFrom(
-                                textStyle: GoogleFonts.montserrat(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.grey,
-                                ),
-                              ),
+                              labelText: 'Добавить афишу',
+                              border: OutlineInputBorder(),
                             ),
+                            onTap: () {
+                              getImageFromUser();
+                            },
                           ),
                           SizedBox(height: 10),
                           SizedBox(
