@@ -142,16 +142,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 120,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        // child: Image.memory(base64.decode(data["img"])),
-                        child:
-                            // Image.network(
-                            //     'https://tpc.googlesyndication.com/simgad/10882291894902751177?sqp=4sqPyQQ7QjkqNxABHQAAtEIgASgBMAk4A0DwkwlYAWBfcAKAAQGIAQGdAQAAgD-oAQGwAYCt4gS4AV_FAS2ynT4&rs=AOga4qkQQMF2nSExk1z-5ipjKy2KOdKFcQ'),
-                            Image.network(
+                        child: Image.network(
                           data["img"],
                           fit: BoxFit.fitWidth,
                           errorBuilder: (context, error, stackTrace) {
-                            return Image.asset(blankProfileImage,
-                                fit: BoxFit.fitWidth);
+                            return Image.asset(
+                              blankProfileImage,
+                              fit: BoxFit.fitWidth,
+                            );
                           },
                         ),
                       ),

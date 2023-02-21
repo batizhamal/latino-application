@@ -104,6 +104,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
   String? _image;
   final ImagePicker _imagePicker = ImagePicker();
+  bool _imageChanged = false;
 
   getImageFromUser() async {
     final XFile? image =
@@ -117,6 +118,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
     setState(() {
       _image = base64Image;
+      _imageChanged = true;
     });
   }
 
@@ -150,27 +152,58 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
           padding: const EdgeInsets.all(30),
           child: Column(
             children: [
-              GestureDetector(
-                onTap: () {
-                  getImageFromUser();
-                },
-                child: SizedBox(
-                  width: 120,
-                  height: 120,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child:
-                        // Image.memory(base64.decode(_image!)),
-                        Image.network(
-                      _image!,
-                      fit: BoxFit.fitWidth,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(blankProfileImage,
-                            fit: BoxFit.fitWidth);
-                      },
+              Stack(
+                children: [
+                  SizedBox(
+                    width: 120,
+                    height: 120,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: _imageChanged
+                          ? Image.memory(
+                              base64.decode(_image!),
+                              fit: BoxFit.fitWidth,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  blankProfileImage,
+                                  fit: BoxFit.fitWidth,
+                                );
+                              },
+                            )
+                          : Image.network(
+                              _image!,
+                              fit: BoxFit.fitWidth,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  blankProfileImage,
+                                  fit: BoxFit.fitWidth,
+                                );
+                              },
+                            ),
                     ),
                   ),
-                ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        getImageFromUser();
+                      },
+                      child: Container(
+                        width: 35,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: Color(darkYellow),
+                        ),
+                        child: Icon(
+                          Icons.edit_outlined,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
               Form(

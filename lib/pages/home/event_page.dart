@@ -123,13 +123,7 @@ class _EventPageState extends State<EventPage> {
                     ],
                   ),
                   flexibleSpace: FlexibleSpaceBar(
-                    background:
-                        // Image.memory(
-                        //   base64.decode(event["img"]),
-                        //   fit: BoxFit.cover,
-                        //   width: double.maxFinite,
-                        // ),
-                        Image.network(
+                    background: Image.network(
                       event["img"],
                       errorBuilder: (context, exception, stackTrace) {
                         return Image.asset(

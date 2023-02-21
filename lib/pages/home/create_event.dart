@@ -219,7 +219,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
-                height: screenHeight * 0.15,
+                height: screenHeight * 0.18,
                 child: Column(
                   children: [
                     Form(
@@ -233,7 +233,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                               hintText: 'Название',
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 20),
                           TextFormField(
                             decoration: InputDecoration(
                               prefixIcon: IconButton(
@@ -246,7 +246,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                   DateFormat.yMd().format(_dateController),
                             ),
                           ),
-                          const SizedBox(height: 10),
                         ],
                       ),
                     ),
@@ -255,7 +254,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
               ),
               Container(
                 padding: const EdgeInsets.all(30),
-                height: screenHeight * 0.85,
+                height: screenHeight * 0.82,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -267,8 +266,35 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   children: [
                     Form(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          SizedBox(
+                            width: 220.0,
+                            child: OutlinedButton(
+                              onPressed: getImageFromUser,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(_image != null
+                                      ? Icons.check_circle_outline
+                                      : Icons.upload_file_outlined),
+                                  SizedBox(width: 10),
+                                  Expanded(
+                                    child: Text(
+                                      _image != null
+                                          ? _image!
+                                          : "Добавить афишу",
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                side: BorderSide(color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
                           TextFormField(
                             decoration: InputDecoration(
                               prefixIcon: IconButton(
@@ -281,7 +307,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                               border: OutlineInputBorder(),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 20),
                           TextFormField(
                             decoration: InputDecoration(
                               prefixIcon: IconButton(
@@ -294,7 +320,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                               border: OutlineInputBorder(),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 20),
                           TextFormField(
                             controller: _descriptionController,
                             decoration: const InputDecoration(
@@ -306,7 +332,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           ),
 
                           // DatePicker
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 20),
 
                           TextFormField(
                             controller: _priceController,
@@ -317,7 +343,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                               border: OutlineInputBorder(),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 20),
                           TextFormField(
                             controller: _addressController,
                             decoration: const InputDecoration(
@@ -327,25 +353,25 @@ class _CreateEventPageState extends State<CreateEventPage> {
                               border: OutlineInputBorder(),
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              prefixIcon: IconButton(
-                                onPressed: () {
-                                  getImageFromUser();
-                                },
-                                icon: Icon(Icons.image_outlined),
-                              ),
-                              labelText: _image != null
-                                  ? "Имя файла"
-                                  : 'Добавить афишу',
-                              border: OutlineInputBorder(),
-                            ),
-                            onTap: () {
-                              getImageFromUser();
-                            },
-                          ),
-                          SizedBox(height: 10),
+                          // const SizedBox(height: 20),
+                          // TextFormField(
+                          //   decoration: InputDecoration(
+                          //     prefixIcon: IconButton(
+                          //       onPressed: () {
+                          //         getImageFromUser();
+                          //       },
+                          //       icon: Icon(Icons.image_outlined),
+                          //     ),
+                          //     labelText: _image != null
+                          //         ? "Имя файла"
+                          //         : 'Добавить афишу',
+                          //     border: OutlineInputBorder(),
+                          //   ),
+                          //   onTap: () {
+                          //     getImageFromUser();
+                          //   },
+                          // ),
+                          SizedBox(height: 60),
                           SizedBox(
                             width: double.infinity,
                             height: 50,
