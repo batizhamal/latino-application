@@ -76,6 +76,7 @@ flutter:
     - assets/images/two_dancers_cartoon.png
     - assets/images/planning.png
     - assets/images/blank_profile.jpeg
+    - assets/images/default.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

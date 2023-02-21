@@ -159,7 +159,16 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                   height: 120,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
-                    child: Image.memory(base64.decode(_image!)),
+                    child:
+                        // Image.memory(base64.decode(_image!)),
+                        Image.network(
+                      _image!,
+                      fit: BoxFit.fitWidth,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(blankProfileImage,
+                            fit: BoxFit.fitWidth);
+                      },
+                    ),
                   ),
                 ),
               ),

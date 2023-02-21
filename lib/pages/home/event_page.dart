@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latino_app/constants/color_codes.dart';
+import 'package:latino_app/constants/image_strings.dart';
 import 'package:latino_app/pages/home/create_event.dart';
 import 'package:latino_app/pages/home/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -122,16 +123,22 @@ class _EventPageState extends State<EventPage> {
                     ],
                   ),
                   flexibleSpace: FlexibleSpaceBar(
-                    background: Image.memory(
-                      base64.decode(event["img"]),
-                      fit: BoxFit.cover,
-                      width: double.maxFinite,
+                    background:
+                        // Image.memory(
+                        //   base64.decode(event["img"]),
+                        //   fit: BoxFit.cover,
+                        //   width: double.maxFinite,
+                        // ),
+                        Image.network(
+                      event["img"],
+                      errorBuilder: (context, exception, stackTrace) {
+                        return Image.asset(
+                          defaultEvent,
+                          fit: BoxFit.fitWidth,
+                        );
+                      },
+                      fit: BoxFit.fitWidth,
                     ),
-                    //     Image.network(
-                    //   'https://images.unsplash.com/photo-1485550409059-9afb054cada4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80',
-                    //   fit: BoxFit.cover,
-                    //   width: double.maxFinite,
-                    // ),
                   ),
                   bottom: PreferredSize(
                     preferredSize: Size.fromHeight(screenHeight * 0.15),
