@@ -104,8 +104,12 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   String? _image;
   final ImagePicker _imagePicker = ImagePicker();
   bool _imageChanged = false;
+  bool _uploadingImage = false;
 
   getImageFromUser() async {
+    setState(() {
+      _uploadingImage = true;
+    });
     final XFile? image =
         await _imagePicker.pickImage(source: ImageSource.gallery);
     if (image == null) {
@@ -118,6 +122,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     setState(() {
       _image = base64Image;
       _imageChanged = true;
+      _uploadingImage = false;
     });
   }
 
@@ -195,10 +200,18 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                           borderRadius: BorderRadius.circular(100),
                           color: Color(darkYellow),
                         ),
-                        child: Icon(
-                          Icons.edit_outlined,
-                          size: 20,
-                        ),
+                        child: _uploadingImage
+                            ? Container(
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Color(mainDark),
+                                  ),
+                                ),
+                              )
+                            : Icon(
+                                Icons.edit_outlined,
+                                size: 20,
+                              ),
                       ),
                     ),
                   ),

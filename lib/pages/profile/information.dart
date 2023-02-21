@@ -47,7 +47,16 @@ class InformationPage extends StatelessWidget {
                 height: 120,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: Image.asset(blankProfileImage),
+                  child: Image.network(
+                    data["img"],
+                    fit: BoxFit.fitWidth,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        blankProfileImage,
+                        fit: BoxFit.fitWidth,
+                      );
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 40),

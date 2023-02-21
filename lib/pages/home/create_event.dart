@@ -79,8 +79,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   String? _image;
   final ImagePicker _imagePicker = ImagePicker();
+  bool _uploadingImage = false;
 
   getImageFromUser() async {
+    setState(() {
+      _uploadingImage = true;
+    });
     final XFile? image =
         await _imagePicker.pickImage(source: ImageSource.gallery);
     if (image == null) {
@@ -92,6 +96,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
     setState(() {
       _image = base64Image;
+      _uploadingImage = false;
     });
   }
 
@@ -272,23 +277,32 @@ class _CreateEventPageState extends State<CreateEventPage> {
                             width: 220.0,
                             child: OutlinedButton(
                               onPressed: getImageFromUser,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(_image != null
-                                      ? Icons.check_circle_outline
-                                      : Icons.upload_file_outlined),
-                                  SizedBox(width: 10),
-                                  Expanded(
-                                    child: Text(
-                                      _image != null
-                                          ? _image!
-                                          : "Добавить афишу",
-                                      overflow: TextOverflow.ellipsis,
+                              child: _uploadingImage
+                                  ? Container(
+                                      child: const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Color(mainDark),
+                                        ),
+                                      ),
+                                    )
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(_image != null
+                                            ? Icons.check_circle_outline
+                                            : Icons.upload_file_outlined),
+                                        SizedBox(width: 10),
+                                        Expanded(
+                                          child: Text(
+                                            _image != null
+                                                ? _image!
+                                                : "Добавить афишу",
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
                               style: OutlinedButton.styleFrom(
                                 side: BorderSide(color: Colors.grey),
                               ),
