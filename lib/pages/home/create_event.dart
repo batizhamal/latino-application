@@ -85,12 +85,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
       return;
     }
 
-    Uint8List imageByte = await image!.readAsBytes();
-    String _base64 = base64.encode(imageByte);
+    Uint8List imageByte = await image.readAsBytes();
+    String base64Image = base64.encode(imageByte);
 
-    print(_base64);
     setState(() {
-      _image = _base64;
+      _image = base64Image;
     });
   }
 
