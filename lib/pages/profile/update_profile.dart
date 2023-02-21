@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:latino_app/auth/auth_page.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/constants/image_strings.dart';
@@ -33,6 +35,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     _usernameController = TextEditingController(text: widget.data["email"]);
     _phoneNumberController =
         TextEditingController(text: widget.data["phone_number"]);
+    _image = widget.data["img"];
     super.initState();
   }
 
@@ -58,7 +61,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
       'surname': _surnameController.text,
       'phone_number': _phoneNumberController.text,
       'type': 'b',
-      'img': widget.data["img"],
+      'img': _image,
     };
 
     var response = await http.put(
@@ -99,6 +102,24 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     );
   }
 
+  String? _image;
+  final ImagePicker _imagePicker = ImagePicker();
+
+  getImageFromUser() async {
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      return;
+    }
+
+    Uint8List imageByte = await image.readAsBytes();
+    String base64Image = base64.encode(imageByte);
+
+    setState(() {
+      _image = base64Image;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final textScale = MediaQuery.of(context).textScaleFactor;
@@ -129,12 +150,17 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
           padding: const EdgeInsets.all(30),
           child: Column(
             children: [
-              SizedBox(
-                width: 120,
-                height: 120,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.asset(blankProfileImage),
+              GestureDetector(
+                onTap: () {
+                  getImageFromUser();
+                },
+                child: SizedBox(
+                  width: 120,
+                  height: 120,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image.memory(base64.decode(_image!)),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
