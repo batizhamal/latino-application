@@ -1,24 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latino_app/constants/color_codes.dart';
+import 'package:latino_app/pages/home/create_event.dart';
 import 'package:latino_app/pages/home/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class EventPage extends StatefulWidget {
-  final event;
+  final eventId;
   final bool canCreate;
-  const EventPage({super.key, required this.event, required this.canCreate});
+  const EventPage({super.key, required this.eventId, required this.canCreate});
 
   @override
   State<EventPage> createState() => _EventPageState();
 }
 
 class _EventPageState extends State<EventPage> {
+  var event;
+
+  registerForEvent(int id) async {
+    final sharedPrederences = await SharedPreferences.getInstance();
+    var token = sharedPrederences.getString("token");
+
+    await http.post(
+      Uri.parse("http://latino-parties.com/api/events/$id/register"),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+  }
+
+  unRegisterFromEvent(int id) async {
+    final sharedPrederences = await SharedPreferences.getInstance();
+    var token = sharedPrederences.getString("token");
+
+    await http.delete(
+      Uri.parse("http://latino-parties.com/api/events/$id/cancel-registration"),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+  }
+
+  getEvent(int id) async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    var token = sharedPreferences.getString("token");
+
+    event = await http.get(
+      Uri.parse("http://latino-parties.com/api/events/$id"),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    getEvent(widget.eventId);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-
-    final event = widget.event;
     final canCreate = widget.canCreate;
     print(event);
 
@@ -96,7 +141,17 @@ class _EventPageState extends State<EventPage> {
                               icon: Icon(Icons.edit_outlined),
                               iconSize: 20.0,
                               color: Colors.grey,
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          CreateEventPage(
+                                            editing: true,
+                                            event: event,
+                                          )),
+                                  (Route<dynamic> route) => false,
+                                );
+                              },
                             )
                           else
                             Container(),
@@ -209,20 +264,47 @@ class _EventPageState extends State<EventPage> {
                       SizedBox(height: 20),
                     ],
                   ),
-                  canCreate
-                      ? Container()
-                      : SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Хочу пойти!'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(mainRed),
-                              elevation: 0,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      event?["status"] == 'Зарегистрирован'
+                          ? Text(
+                              "Вы идете на это событие",
+                              style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16,
+                              ),
+                            )
+                          : Container(),
+                      SizedBox(height: 10),
+                      canCreate
+                          ? Container()
+                          : SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (event?["status"] ==
+                                      'Не зарегистрирован') {
+                                    registerForEvent(event["id"]);
+                                  } else {
+                                    unRegisterFromEvent(event["id"]);
+                                  }
+                                },
+                                child: Text(
+                                  event["status"] == 'Не зарегистрирован'
+                                      ? 'Хочу пойти!'
+                                      : "Не смогу пойти",
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(mainRed),
+                                  elevation: 0,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                    ],
+                  ),
                 ],
               ),
             ),

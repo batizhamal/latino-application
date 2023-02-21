@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:latino_app/components/date_picker_timeline/date_picker_timeline.dart';
 import 'package:latino_app/constants/color_codes.dart';
 import 'package:latino_app/pages/home/create_event.dart';
-import 'package:latino_app/pages/home/edit_event.dart';
 import 'package:latino_app/pages/home/event_card.dart';
 import 'package:latino_app/pages/profile/profile.dart';
 import 'package:latino_app/pages/welcome_screen.dart';
@@ -242,30 +241,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-    );
-  }
-
-  registerForEvent(int id) async {
-    final sharedPrederences = await SharedPreferences.getInstance();
-    var token = sharedPrederences.getString("token");
-
-    await http.post(
-      Uri.parse("http://latino-parties.com/api/events/$id/register"),
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
-    );
-  }
-
-  unRegisterFromEvent(int id) async {
-    final sharedPrederences = await SharedPreferences.getInstance();
-    var token = sharedPrederences.getString("token");
-
-    await http.delete(
-      Uri.parse("http://latino-parties.com/api/events/$id/cancel-registration"),
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
     );
   }
 }

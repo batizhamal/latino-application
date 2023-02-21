@@ -14,7 +14,7 @@ List<Container> getEventWidgets(dateEvents, context, canCreate) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (BuildContext context) =>
-                    EventPage(event: event, canCreate: canCreate)),
+                    EventPage(eventId: event["id"], canCreate: canCreate)),
             (Route<dynamic> route) => false,
           );
         },

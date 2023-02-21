@@ -12,25 +12,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:latino_app/extensions/timeofday.dart';
 
 class CreateEventPage extends StatefulWidget {
-  const CreateEventPage({super.key});
+  final bool editing;
+  final event;
+  const CreateEventPage({super.key, this.editing = false, this.event});
 
   @override
   State<CreateEventPage> createState() => _CreateEventPageState();
 }
 
 class _CreateEventPageState extends State<CreateEventPage> {
-  final _titleController = TextEditingController();
+  var _titleController = TextEditingController();
 
-  final _descriptionController = TextEditingController();
+  var _descriptionController = TextEditingController();
 
   DateTime _dateController = DateTime.now();
 
   TimeOfDay _startTimeController = TimeOfDay.now();
   TimeOfDay _endTimeController = TimeOfDay.now();
 
-  final _priceController = TextEditingController();
+  var _priceController = TextEditingController();
 
-  final _addressController = TextEditingController();
+  var _addressController = TextEditingController();
 
   bool _creating = false;
 
@@ -114,14 +116,27 @@ class _CreateEventPageState extends State<CreateEventPage> {
     final sharedPreferences = await SharedPreferences.getInstance();
 
     var token = sharedPreferences.getString("token");
+    var response;
 
-    var response = await http.post(
-      Uri.parse("http://latino-parties.com/api/events"),
-      body: body,
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
-    );
+    if (widget.editing) {
+      var eventId = widget.event["id"];
+      print(body);
+      response = await http.put(
+        Uri.parse("http://latino-parties.com/api/events/$eventId"),
+        body: body,
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+    } else {
+      response = await http.post(
+        Uri.parse("http://latino-parties.com/api/events"),
+        body: body,
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+    }
 
     if (response.statusCode == 200) {
       setState(() {
@@ -137,9 +152,38 @@ class _CreateEventPageState extends State<CreateEventPage> {
   }
 
   @override
+  void initState() {
+    if (widget.editing) {
+      var dateParts = widget.event["date"].split(".");
+
+      setState(() {
+        _titleController = TextEditingController(text: widget.event["title"]);
+        _descriptionController =
+            TextEditingController(text: widget.event["description"]);
+        _addressController =
+            TextEditingController(text: widget.event["address"]);
+        _priceController = TextEditingController(text: widget.event["price"]);
+        _dateController = DateTime(int.parse(dateParts[2]),
+            int.parse(dateParts[1]), int.parse(dateParts[0]));
+        _startTimeController = TimeOfDay(
+            hour: int.parse(widget.event["start_time"].split(":")[0]),
+            minute: int.parse(widget.event["start_time"].split(":")[1]));
+        _endTimeController = TimeOfDay(
+            hour: int.parse(widget.event["end_time"].split(":")[0]),
+            minute: int.parse(widget.event["end_time"].split(":")[1]));
+        ;
+      });
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final textScale = MediaQuery.of(context).textScaleFactor;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    bool _editing = widget.editing;
+    final _event = widget.event;
 
     return Scaffold(
       backgroundColor: const Color(darkYellow),
@@ -292,7 +336,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                 },
                                 icon: Icon(Icons.image_outlined),
                               ),
-                              labelText: 'Добавить афишу',
+                              labelText: _image != null
+                                  ? "Имя файла"
+                                  : 'Добавить афишу',
                               border: OutlineInputBorder(),
                             ),
                             onTap: () {
@@ -304,14 +350,18 @@ class _CreateEventPageState extends State<CreateEventPage> {
                             width: double.infinity,
                             height: 50,
                             child: ElevatedButton(
-                              onPressed: createEvent,
+                              onPressed: () {
+                                createEvent();
+                              },
                               child: _creating
                                   ? const Center(
                                       child: CircularProgressIndicator(
                                         color: Colors.white,
                                       ),
                                     )
-                                  : const Text('Создать'),
+                                  : Text(_editing == true
+                                      ? 'Редактировать'
+                                      : 'Создать'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(mainRed),
                                 elevation: 0,
