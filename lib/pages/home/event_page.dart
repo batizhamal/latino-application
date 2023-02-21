@@ -122,13 +122,16 @@ class _EventPageState extends State<EventPage> {
                     ],
                   ),
                   flexibleSpace: FlexibleSpaceBar(
-                    background:
-                        // Image.memory(base64.decode(event["img"]), fit: BoxFit.cover),
-                        Image.network(
-                      'https://images.unsplash.com/photo-1485550409059-9afb054cada4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80',
+                    background: Image.memory(
+                      base64.decode(event["img"]),
                       fit: BoxFit.cover,
                       width: double.maxFinite,
                     ),
+                    //     Image.network(
+                    //   'https://images.unsplash.com/photo-1485550409059-9afb054cada4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80',
+                    //   fit: BoxFit.cover,
+                    //   width: double.maxFinite,
+                    // ),
                   ),
                   bottom: PreferredSize(
                     preferredSize: Size.fromHeight(screenHeight * 0.15),
