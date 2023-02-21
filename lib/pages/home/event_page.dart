@@ -32,6 +32,8 @@ class _EventPageState extends State<EventPage> {
         'Authorization': 'Bearer $token',
       },
     );
+
+    getEvent(widget.eventId);
   }
 
   unRegisterFromEvent(int id) async {
@@ -44,6 +46,7 @@ class _EventPageState extends State<EventPage> {
         'Authorization': 'Bearer $token',
       },
     );
+    getEvent(widget.eventId);
   }
 
   getEvent(int id) async {
