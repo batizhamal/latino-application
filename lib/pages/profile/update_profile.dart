@@ -60,7 +60,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
       'name': _nameController.text,
       'surname': _surnameController.text,
       'phone_number': _phoneNumberController.text,
-      'type': 'b',
+      'type': widget.data["type"],
       'img': _image,
     };
 
@@ -75,8 +75,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     if (response.statusCode != 200) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-            builder: (BuildContext context) =>
-                const AuthPage(showLoginPage: true)),
+            builder: (BuildContext context) => const ProfilePage()),
         (Route<dynamic> route) => false,
       );
     }
