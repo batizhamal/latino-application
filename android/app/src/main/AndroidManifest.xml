@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.latino_app">
+    package="com.latino.latino_parties">
    <application
         android:label="Latino Parties"
         android:name="${applicationName}"
