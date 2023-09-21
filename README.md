@@ -1,7 +1,7 @@
 # Latino Application
 
 ## Demo:
-![Latino Application Demo](https://github.com/batizhamal/latino-application/assets/52880286/84b035f9-2b58-4a1a-a891-51dd18058a37)
+![Latino Application Demo](https://github.com/batizhamal/latino-application/assets/52880286/4e577dfc-cc18-4ba1-95bd-4dd874cca184)
 
 ## Description:
 A mobile application in Flutter with an implemented calendar to keep track of and to organize events with detailed information.
